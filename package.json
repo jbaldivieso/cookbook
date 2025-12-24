@@ -1,0 +1,24 @@
+{
+  "name": "cookbook",
+  "version": "1.0.0",
+  "description": "A static site for hosting personal recipes",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "ROLLUP_WATCH=true rollup -c -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bulma": "^1.0.4"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "rollup": "^4.54.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-serve": "^3.0.0"
+  }
+}
