@@ -72,6 +72,61 @@ export default function(eleventyConfig) {
     return filterCategories(items);
   });
 
+  // Transform to inject scaling tabs before ingredient sections
+  eleventyConfig.addTransform("injectScalingTabs", function(content, outputPath) {
+    // Only process HTML files in /recipes/
+    if (!outputPath || !outputPath.endsWith('.html') || !outputPath.includes('/recipes/')) {
+      return content;
+    }
+
+    // Regex to find h2 headings containing "ingredients" (case-insensitive)
+    const ingredientsHeadingRegex = /<h2\s+id="([^"]+)"[^>]*>([^<]*ingredients[^<]*)<\/h2>/gi;
+
+    const matches = [];
+    let match;
+
+    // Collect all matches first (to avoid regex index issues during replacement)
+    while ((match = ingredientsHeadingRegex.exec(content)) !== null) {
+      matches.push({
+        fullMatch: match[0],
+        sectionId: match[1],
+        index: match.index
+      });
+    }
+
+    // Process in reverse order to preserve indices
+    let result = content;
+    for (let i = matches.length - 1; i >= 0; i--) {
+      const { fullMatch, sectionId, index } = matches[i];
+
+      const tabsHtml = `
+<div class="tabs is-toggle scaling-tabs" data-section-id="${sectionId}">
+  <ul>
+    <li class="is-active" data-scale="1"><a>1x</a></li>
+    <li data-scale="2"><a>2x</a></li>
+    <li data-scale="3"><a>3x</a></li>
+  </ul>
+</div>
+`;
+      result = result.slice(0, index) + tabsHtml + result.slice(index);
+    }
+
+    return result;
+  });
+
+  // Transform to mark scalable quantities with data attributes
+  eleventyConfig.addTransform("markScalableQuantities", function(content, outputPath) {
+    if (!outputPath || !outputPath.endsWith('.html') || !outputPath.includes('/recipes/')) {
+      return content;
+    }
+
+    // Match <code>NNNg</code> pattern and add data attributes
+    return content.replace(
+      /<code>(\d+)g<\/code>/g,
+      '<code data-original-value="$1" data-scalable="true">$1g</code>'
+    );
+  });
+
   // Pass through CSS and JS bundles from Rollup to site root
   eleventyConfig.addPassthroughCopy({ "dist/bundle.css": "bundle.css" });
   eleventyConfig.addPassthroughCopy({ "dist/bundle.js": "bundle.js" });

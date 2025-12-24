@@ -11,3 +11,18 @@
     font-size: 150%;
   }
 }
+
+/* Scaling tabs styling */
+.scaling-tabs {
+  margin-bottom: 0.5rem;
+}
+
+.scaling-tabs ul {
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+/* Highlight scaled values */
+code[data-scalable="true"] {
+  font-weight: 600;
+}
