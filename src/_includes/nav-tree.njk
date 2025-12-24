@@ -2,7 +2,7 @@
   <ul>
     {% for item in items %}
       <li>
-        <a href="{{ item.url }}" class="{% if item.isCategory %}has-text-weight-bold{% endif %}">
+        <a href="{{ item.url | url }}" class="{% if item.isCategory %}has-text-weight-bold{% endif %}">
           {{ item.title }}
         </a>
         {% if item.children.length %}
