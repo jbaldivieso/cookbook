@@ -1,9 +1,17 @@
 :root {
   --bulma-family-primary: "Crimson Pro", serif;
 }
-.toc ul {
-  list-style: disc;
-  margin-left: 1em;
+.navbar {
+  --bulma-navbar-background-color: var(--bulma-scheme-main-bis);
+  font-weight: bold;
+  font-size: 125%;
+}
+.toc {
+  font-size: 200%;
+  ul {
+    list-style: disc;
+    margin-left: 1em;
+  }
 }
 .content {
   ul,

@@ -135,6 +135,13 @@ export default function(eleventyConfig) {
   eleventyConfig.addWatchTarget("dist/bundle.css");
   eleventyConfig.addWatchTarget("dist/bundle.js");
 
+  // Also watch source CSS/JS to ensure rebuilds trigger
+  eleventyConfig.addWatchTarget("src/main.js");
+  eleventyConfig.addWatchTarget("src/custom.css");
+
+  // Use passthrough mode for dev server to serve files directly from dist
+  eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
+
   return {
     dir: {
       input: "src",
