@@ -24,3 +24,11 @@ layout: base.njk
     </article>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.enableWakeLock) {
+      window.enableWakeLock();
+    }
+  });
+</script>

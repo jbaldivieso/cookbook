@@ -5,3 +5,9 @@
   list-style: disc;
   margin-left: 1em;
 }
+.content {
+  ul,
+  p {
+    font-size: 150%;
+  }
+}
