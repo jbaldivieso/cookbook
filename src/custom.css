@@ -26,3 +26,14 @@
 code[data-scalable="true"] {
   font-weight: 600;
 }
+
+/* List item toggle functionality */
+.content li {
+  cursor: pointer;
+  user-select: none;
+}
+
+.content li.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}

@@ -93,5 +93,17 @@ function updateActiveTab(tabsContainer, scale) {
   });
 }
 
+// Toggle strikethrough on list items
+function initListItemToggle() {
+  const listItems = document.querySelectorAll('.content li');
+
+  listItems.forEach(li => {
+    li.addEventListener('click', () => {
+      li.classList.toggle('completed');
+    });
+  });
+}
+
 window.enableWakeLock = enableWakeLock;
 window.initRecipeScaling = initRecipeScaling;
+window.initListItemToggle = initListItemToggle;
