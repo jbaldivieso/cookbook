@@ -69,7 +69,7 @@ export default function() {
             url: itemUrl,
             order: meta.order,
             isCategory: true,
-            children: buildTree(fullPath, itemUrl)
+            children: buildTree(fullPath, itemUrl.slice(0, -1))
           });
         }
       } else if (entry.name.endsWith('.md')) {
