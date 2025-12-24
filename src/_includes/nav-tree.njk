@@ -1,0 +1,14 @@
+{% macro renderNavTree(items, depth=0) %}
+  <ul>
+    {% for item in items %}
+      <li>
+        <a href="{{ item.url }}" class="{% if item.isCategory %}has-text-weight-bold{% endif %}">
+          {{ item.title }}
+        </a>
+        {% if item.children.length %}
+          {{ renderNavTree(item.children, depth + 1) }}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endmacro %}

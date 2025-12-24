@@ -4,8 +4,12 @@
   "description": "A static site for hosting personal recipes",
   "type": "module",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "ROLLUP_WATCH=true rollup -c -w"
+    "build:css": "rollup -c",
+    "build:html": "eleventy",
+    "build": "npm-run-all build:css build:html",
+    "dev:css": "ROLLUP_WATCH=true rollup -c -w",
+    "dev:html": "eleventy --serve",
+    "dev": "npm-run-all --parallel dev:css dev:html"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +18,12 @@
     "bulma": "^1.0.4"
   },
   "devDependencies": {
+    "@11ty/eleventy": "^3.1.2",
     "@rollup/plugin-node-resolve": "^16.0.3",
+    "eleventy-plugin-toc": "^1.1.5",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.2.0",
+    "npm-run-all": "^4.1.5",
     "rollup": "^4.54.0",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-livereload": "^2.0.5",

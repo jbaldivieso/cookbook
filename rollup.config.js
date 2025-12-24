@@ -1,6 +1,5 @@
 import resolve from '@rollup/plugin-node-resolve';
 import postcss from 'rollup-plugin-postcss';
-import copy from 'rollup-plugin-copy';
 import serve from 'rollup-plugin-serve';
 import livereload from 'rollup-plugin-livereload';
 
@@ -18,15 +17,11 @@ export default {
       extract: 'bundle.css',
       minimize: !dev
     }),
-    copy({
-      targets: [
-        { src: 'src/index.html', dest: 'dist' }
-      ]
-    }),
+    // 11ty handles HTML, we just bundle CSS/JS
     dev && serve({
-      open: true,
+      open: false,  // 11ty will serve and open browser
       contentBase: 'dist',
-      port: 3000
+      port: 3001  // Different port than 11ty
     }),
     dev && livereload('dist')
   ].filter(Boolean)

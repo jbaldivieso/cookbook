@@ -1,18 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cookbook</title>
-  <link rel="stylesheet" href="bundle.css">
-</head>
-<body>
-  <section class="section">
-    <div class="container">
-      <h1 class="title">Hello World</h1>
-      <p class="subtitle">Welcome to the Cookbook</p>
-    </div>
-  </section>
-  <script src="bundle.js"></script>
-</body>
-</html>
+---
+layout: base.njk
+title: Home
+siteTitle: Recipes
+---
+
+{% from "nav-tree.njk" import renderNavTree %}
+
+<section class="section">
+  <div class="container">
+    <h1 class="title">{{ siteTitle }}</h1>
+
+    <nav class="toc">
+      {{ renderNavTree(navigation | categoriesOnly) }}
+    </nav>
+  </div>
+</section>
