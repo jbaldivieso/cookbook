@@ -51,12 +51,12 @@ export default function(eleventyConfig) {
         if (item.url === url) return item.children;
         if (item.children.length) {
           const found = findCategory(item.children, url);
-          if (found) return found;
+          if (found !== null) return found;
         }
       }
-      return [];
+      return null;
     }
-    return findCategory(navigation, categoryUrl);
+    return findCategory(navigation, categoryUrl) || [];
   });
 
   // Add categoriesOnly filter
