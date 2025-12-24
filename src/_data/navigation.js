@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import matter from 'gray-matter';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,8 +36,20 @@ export default function() {
           const recipeName = entry.name;
           const itemUrl = `${urlPath}/${recipeName}/`;
 
+          // Read and parse front matter to get the recipe title
+          let title = recipeName.replace(/-/g, ' ');
+          try {
+            const mdContent = fs.readFileSync(indexMdPath, 'utf8');
+            const { data } = matter(mdContent);
+            if (data.title) {
+              title = data.title;
+            }
+          } catch (err) {
+            console.warn(`Failed to parse front matter for ${indexMdPath}:`, err.message);
+          }
+
           items.push({
-            title: recipeName.replace(/-/g, ' '),
+            title: title,
             url: itemUrl,
             order: 999,
             isCategory: false,
@@ -77,8 +90,20 @@ export default function() {
         const recipeName = entry.name.replace('.md', '');
         const itemUrl = `${urlPath}/${recipeName}/`;
 
+        // Read and parse front matter to get the recipe title
+        let title = recipeName.replace(/-/g, ' ');
+        try {
+          const mdContent = fs.readFileSync(fullPath, 'utf8');
+          const { data } = matter(mdContent);
+          if (data.title) {
+            title = data.title;
+          }
+        } catch (err) {
+          console.warn(`Failed to parse front matter for ${fullPath}:`, err.message);
+        }
+
         items.push({
-          title: recipeName.replace(/-/g, ' '),
+          title: title,
           url: itemUrl,
           order: 999,
           isCategory: false,
