@@ -2,12 +2,37 @@ import 'bulma/css/bulma.min.css';
 import './custom.css';
 
 // Prevent device from going to sleep on recipe pages
-function enableWakeLock() {
-  if ('wakeLock' in navigator) {
-    navigator.wakeLock.request('screen').catch(() => {
-      // Silently ignore errors (unsupported, user denial, etc.)
-    });
+let wakeLock = null;
+
+async function enableWakeLock() {
+  if (!('wakeLock' in navigator)) {
+    console.log('Wake Lock API not supported');
+    return;
   }
+
+  try {
+    wakeLock = await navigator.wakeLock.request('screen');
+    console.log('Wake lock activated');
+
+    wakeLock.addEventListener('release', () => {
+      console.log('Wake lock released');
+      wakeLock = null;
+    });
+  } catch (err) {
+    console.error('Wake lock error:', err.name, err.message);
+  }
+}
+
+// Re-acquire wake lock when page becomes visible
+function handleVisibilityChange() {
+  if (document.visibilityState === 'visible' && wakeLock === null) {
+    enableWakeLock();
+  }
+}
+
+// Set up visibility change listener
+if ('wakeLock' in navigator) {
+  document.addEventListener('visibilitychange', handleVisibilityChange);
 }
 
 // Recipe scaling functionality
