@@ -95,7 +95,7 @@ function updateActiveTab(tabsContainer, scale) {
 
 // Toggle strikethrough on list items
 function initListItemToggle() {
-  const listItems = document.querySelectorAll('.content li');
+  const listItems = document.querySelectorAll('.content li:not([data-scale])');
 
   listItems.forEach(li => {
     li.addEventListener('click', () => {

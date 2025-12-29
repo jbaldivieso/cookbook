@@ -36,7 +36,7 @@ code[data-scalable="true"] {
 }
 
 /* List item toggle functionality */
-.content li {
+.content li:not([data-scale]) {
   cursor: pointer;
   user-select: none;
 }
