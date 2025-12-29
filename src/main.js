@@ -129,6 +129,38 @@ function initListItemToggle() {
   });
 }
 
+// Navbar burger toggle for mobile
+function initNavbar() {
+  // Burger menu toggle
+  const burgers = document.querySelectorAll('.navbar-burger');
+  burgers.forEach(burger => {
+    burger.addEventListener('click', () => {
+      const targetId = burger.dataset.target;
+      const target = document.getElementById(targetId);
+      burger.classList.toggle('is-active');
+      target.classList.toggle('is-active');
+    });
+  });
+
+  // Dropdown click-to-toggle for mobile
+  const dropdowns = document.querySelectorAll('.navbar-item.has-dropdown');
+  dropdowns.forEach(dropdown => {
+    const link = dropdown.querySelector('.navbar-link');
+    link.addEventListener('click', (e) => {
+      // Only toggle on mobile (when burger is visible)
+      const burger = document.querySelector('.navbar-burger');
+      if (window.getComputedStyle(burger).display !== 'none') {
+        e.preventDefault();
+        dropdown.classList.toggle('is-active');
+      }
+    });
+  });
+}
+
 window.enableWakeLock = enableWakeLock;
 window.initRecipeScaling = initRecipeScaling;
 window.initListItemToggle = initListItemToggle;
+
+document.addEventListener('DOMContentLoaded', () => {
+  initNavbar();
+});
