@@ -17,4 +17,6 @@ title: Multigrain Bread
 - `15g` oats (for sprinkling on top before baking)
 
 ## Notes
-Can mix and match with the grains. Add them up to 120g.
+Bake for an hour (takes 10 minutes longer than other yeasted ones in Ken's book) at 425. Cover with foil after 15-20 minutes.
+
+Can mix and match with the grains. Add them up to 120g. Soaking them in about 400g of water yields about the right amount of leftover liquid.

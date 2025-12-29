@@ -57,5 +57,4 @@ _site/           # 11ty output (final static site)
    ### Step 1
    Do something...
    ```
-3. The TOC will be auto-generated from h2/h3 headings
-4. Add a link to the recipe on the homepage
+3. Add a link to the recipe on the homepage

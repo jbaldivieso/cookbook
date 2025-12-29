@@ -15,4 +15,6 @@ title: Raisin-Pecan Bread
 - `80g` pecans
 
 ## Notes
-I use as much tea as I have. I often add a little more pecans. Also can replace some white flour with buckwheat.
+Bake for an 50 minutes at 425 (or 400?). Cover with foil after 15-20 minutes.
+
+Recipe calls for 50/50 water/tea; I just use all the tea I have. I often add a little more pecans. Also can replace some white flour with buckwheat.
