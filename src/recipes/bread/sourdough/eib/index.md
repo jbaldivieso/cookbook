@@ -13,3 +13,5 @@ title: Eib (Pain de campagne)
 
 ## Notes
 Ken calls this "Country Bread (Eib-style)". He includes a walnut variation.
+
+Bake at 450 in closed dutch oven for 40 minutes, then 15 minutes with lid off at 400-425.
