@@ -131,6 +131,11 @@ export default function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "dist/bundle.css": "bundle.css" });
   eleventyConfig.addPassthroughCopy({ "dist/bundle.js": "bundle.js" });
 
+  // PWA assets
+  eleventyConfig.addPassthroughCopy({ "src/manifest.json": "manifest.json" });
+  eleventyConfig.addPassthroughCopy({ "src/sw.js": "sw.js" });
+  eleventyConfig.addPassthroughCopy({ "src/icon.svg": "icon.svg" });
+
   // Watch for changes in dist (when Rollup rebuilds)
   eleventyConfig.addWatchTarget("dist/bundle.css");
   eleventyConfig.addWatchTarget("dist/bundle.js");

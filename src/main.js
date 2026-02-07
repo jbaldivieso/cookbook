@@ -163,4 +163,9 @@ window.initListItemToggle = initListItemToggle;
 
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
+
+  // Register service worker for PWA support
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+  }
 });
