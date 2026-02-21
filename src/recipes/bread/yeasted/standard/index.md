@@ -6,8 +6,8 @@ title: The Standard #2
 
 - `100g` starter
 - `380g` water (90-95˚)
-- `400g` white flour
 - `100g` whole-wheat flour
+- `400g` white flour
 - `11g` salt
 - `3g` yeast
 
@@ -15,3 +15,5 @@ title: The Standard #2
 Bake for an 50 minutes at 425 (or 400?). Cover with foil after 15-20 minutes.
 
 I often use 30% w.w. instead of 20%.
+
+Good as a boule, too (but not as good as pure sourdough).
