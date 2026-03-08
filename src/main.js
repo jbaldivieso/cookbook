@@ -3,12 +3,11 @@ import './custom.css';
 
 // Prevent device from going to sleep on recipe pages
 let wakeLock = null;
+let wakeLockEnabled = false;
+let noSleepVideo = null;
 
-async function enableWakeLock() {
-  if (!('wakeLock' in navigator)) {
-    console.log('Wake Lock API not supported');
-    return;
-  }
+async function requestWakeLock() {
+  if (!('wakeLock' in navigator)) return false;
 
   try {
     wakeLock = await navigator.wakeLock.request('screen');
@@ -17,23 +16,115 @@ async function enableWakeLock() {
     wakeLock.addEventListener('release', () => {
       console.log('Wake lock released');
       wakeLock = null;
+      // Re-acquire if still enabled and page is visible
+      if (wakeLockEnabled && document.visibilityState === 'visible') {
+        requestWakeLock();
+      }
     });
+    return true;
   } catch (err) {
     console.error('Wake lock error:', err.name, err.message);
+    return false;
+  }
+}
+
+// Fallback for iOS: play a silent video in a loop to prevent sleep
+function enableNoSleepFallback() {
+  if (noSleepVideo) return;
+
+  noSleepVideo = document.createElement('video');
+  noSleepVideo.setAttribute('playsinline', '');
+  noSleepVideo.setAttribute('muted', '');
+  noSleepVideo.muted = true;
+  noSleepVideo.loop = true;
+  noSleepVideo.style.position = 'fixed';
+  noSleepVideo.style.top = '-1px';
+  noSleepVideo.style.left = '-1px';
+  noSleepVideo.style.width = '1px';
+  noSleepVideo.style.height = '1px';
+  noSleepVideo.style.opacity = '0.01';
+
+  // Minimal silent MP4 (base64-encoded)
+  // This is a tiny valid MP4 with a silent audio track
+  const silentMp4 = 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAAAhtZGF0AAAA' +
+    'MmWIhAAV//73ye/Apuv5xPASMCHgU3AAAWAAAAMA8gAAAAwAADqYAAAF2hSRnxAAAAARl' +
+    'BQXFhYWJI4IoYuKiosLExsbHBwdHR4eIiIqKjIyOjo+PkREVFRkZHR0fHyIiKioyMjo6P' +
+    'j5ERFRUZGRBAAAABlibXZoZAAAAAAAAAAAAAAAAAAAA+gAAAPoAAEAAAEAAAAAAAAAAAAAAAAB' +
+    'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAB0XRyYWsAAABcdGtoZAAA' +
+    'AAMAAAAAAAAAAAAAAAEAAAAAAAAPoAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA' +
+    'AAAAAAAAAAAAAAAAAAAAIAAB1W1kaWEAAAAgbWRoZAAAAAAAAAAAAAAAAAAAKAAAACgAVcQA' +
+    'AAAAALdoZGxyAAAAAAAAAABzb3VuAAAAAAAAAAAAAAAAU291bmRIYW5kbGVyAAAAARBtaW5m' +
+    'AAAAEHNtaGQAAAAAAAAAAAAAACRkaW5mAAAAHGRyZWYAAAAAAAAAAQAAAAx1cmwgAAAAAQAA' +
+    'ANBzdGJsAAAAZHN0c2QAAAAAAAAAAQAAAFRtcDRhAAAAAAAAAAEAAAAAAAAAAAACABAAAAAA' +
+    'KAAAAAAAAAAAAAAAAAAAAAAAABgZXNkcwAAAAADgICAIQACAASAgIATQBUAAAAAA4CAgAWA' +
+    'gIABAAAAFHN0dHMAAAAAAAAAAQAAAAEAAAAoAAAAFHN0c2MAAAAAAAAAAQAAAAEAAAABAQAA' +
+    'ABRzdHN6AAAAAAAAAAYAAAABAAAAFHNtb28AAAAAAAAAAQAAAAE=';
+
+  noSleepVideo.src = silentMp4;
+  document.body.appendChild(noSleepVideo);
+
+  const playPromise = noSleepVideo.play();
+  if (playPromise) {
+    playPromise.then(() => {
+      console.log('NoSleep fallback video playing');
+    }).catch(() => {
+      // Autoplay blocked — will retry on user interaction
+      console.log('NoSleep fallback: autoplay blocked, waiting for user interaction');
+      const startOnInteraction = () => {
+        if (noSleepVideo && wakeLockEnabled) {
+          noSleepVideo.play().catch(() => {});
+        }
+        document.removeEventListener('touchstart', startOnInteraction);
+        document.removeEventListener('click', startOnInteraction);
+      };
+      document.addEventListener('touchstart', startOnInteraction, { once: true });
+      document.addEventListener('click', startOnInteraction, { once: true });
+    });
+  }
+}
+
+function disableNoSleepFallback() {
+  if (noSleepVideo) {
+    noSleepVideo.pause();
+    noSleepVideo.remove();
+    noSleepVideo = null;
+  }
+}
+
+function isIOS() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+async function enableWakeLock() {
+  wakeLockEnabled = true;
+
+  const acquired = await requestWakeLock();
+
+  // On iOS, the Wake Lock API may be supported but unreliable —
+  // use the video fallback as well
+  if (isIOS()) {
+    enableNoSleepFallback();
+  } else if (!acquired) {
+    // Fallback for browsers without Wake Lock API support
+    enableNoSleepFallback();
   }
 }
 
 // Re-acquire wake lock when page becomes visible
 function handleVisibilityChange() {
-  if (document.visibilityState === 'visible' && wakeLock === null) {
-    enableWakeLock();
+  if (document.visibilityState === 'visible' && wakeLockEnabled) {
+    if (wakeLock === null) {
+      requestWakeLock();
+    }
+    // Restart video fallback if needed on iOS
+    if (isIOS() && noSleepVideo && noSleepVideo.paused) {
+      noSleepVideo.play().catch(() => {});
+    }
   }
 }
 
-// Set up visibility change listener
-if ('wakeLock' in navigator) {
-  document.addEventListener('visibilitychange', handleVisibilityChange);
-}
+document.addEventListener('visibilitychange', handleVisibilityChange);
 
 // Recipe scaling functionality
 function initRecipeScaling() {
