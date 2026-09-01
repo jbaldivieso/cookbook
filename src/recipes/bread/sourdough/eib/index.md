@@ -1,5 +1,5 @@
 ---
-title: Eib (Pain de campagne)
+title: Pain de campagne
 ---
 
 ## Ingredients
@@ -11,7 +11,12 @@ title: Eib (Pain de campagne)
 - `295g` white flour
 - `11g` salt
 
-## Notes
-Ken calls this "Country Bread (Eib-style)". He includes a walnut variation.
+## Timing
+- Autolyse: 20 minutes, then mix.
+- First fold after 10 minutes.
+- Fold twice more "when you see the dough spread out in the tub".
+- Shape and move to brotform when dough is 2.5 original size: 4-5 hours; faster if warmer.
+- Bake at 450 in closed dutch oven for 40 minutes, then 15 minutes with lid off at 400-425.
 
-Bake at 450 in closed dutch oven for 40 minutes, then 15 minutes with lid off at 400-425.
+## Source
+This is Ken Forkish's "Country Bread, EIB-style" from *Evolutions in Bread*. He includes a walnut variation.

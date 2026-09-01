@@ -2,8 +2,6 @@
 title: Classic Sourdough Pancakes
 ---
 
-  Source: [King Arthur Website](https://www.kingarthurbaking.com/recipes/classic-sourdough-pancakes-recipe)
-
 ## Ingredients
 ### Sponge
 
@@ -21,3 +19,6 @@ title: Classic Sourdough Pancakes
 
 ## Notes
 The sponge is an overnight thing. The next day, be sure to beat together the new ingredients before mixing into the sponge.
+
+## Source
+[King Arthur Website](https://www.kingarthurbaking.com/recipes/classic-sourdough-pancakes-recipe)
