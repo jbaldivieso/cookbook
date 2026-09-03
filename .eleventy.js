@@ -1,4 +1,3 @@
-import pluginTOC from 'eleventy-plugin-toc';
 import markdownIt from 'markdown-it';
 import markdownItAnchor from 'markdown-it-anchor';
 
@@ -10,12 +9,6 @@ export default function(eleventyConfig) {
   }).use(markdownItAnchor);
 
   eleventyConfig.setLibrary("md", md);
-
-  // Add TOC plugin
-  eleventyConfig.addPlugin(pluginTOC, {
-    tags: ['h2', 'h3'],
-    ul: true
-  });
 
   // Add breadcrumb filter
   eleventyConfig.addFilter("buildBreadcrumbs", function(page) {
