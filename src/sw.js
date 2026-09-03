@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cookbook-v1';
+const CACHE_NAME = 'cookbook-v2';
 const PRECACHE_URLS = [
   '/',
   '/bundle.css',
@@ -43,13 +43,41 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Static assets & fonts: cache-first for speed
+  // App bundles: stale-while-revalidate. Serving from cache keeps things fast,
+  // but the background refresh means a new build reaches installed clients on
+  // the next load without needing a CACHE_NAME bump.
+  const url = new URL(request.url);
+  const isAppBundle = url.origin === self.location.origin
+    && (url.pathname.endsWith('/bundle.js') || url.pathname.endsWith('/bundle.css'));
+
+  if (isAppBundle) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(cache =>
+        cache.match(request).then(cached => {
+          const network = fetch(request)
+            .then(response => {
+              if (response.ok) cache.put(request, response.clone());
+              return response;
+            })
+            .catch(() => cached);
+
+          if (cached) {
+            event.waitUntil(network);
+            return cached;
+          }
+          return network;
+        })
+      )
+    );
+    return;
+  }
+
+  // Other static assets & fonts: cache-first for speed
   event.respondWith(
     caches.match(request).then(cached => {
       if (cached) return cached;
       return fetch(request).then(response => {
         // Only cache same-origin and font requests
-        const url = new URL(request.url);
         const cacheable = url.origin === self.location.origin
           || url.hostname === 'fonts.googleapis.com'
           || url.hostname === 'fonts.gstatic.com';

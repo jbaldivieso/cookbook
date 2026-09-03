@@ -1,3 +1,6 @@
 <footer class="footer">
-  Tap ingredient lines to cross them out.
+  Tap ingredient lines or recipe steps to cross them out.
+  {% if layout == "recipe.njk" %}
+    <button type="button" id="wake-lock-status" class="wake-lock-status button is-small is-light" hidden aria-live="polite"></button>
+  {% endif %}
 </footer>

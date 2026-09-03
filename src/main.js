@@ -1,130 +1,124 @@
 import 'bulma/css/bulma.min.css';
 import './custom.css';
 
-// Prevent device from going to sleep on recipe pages
+// Prevent device from going to sleep on recipe pages.
+//
+// The Screen Wake Lock API is the only mechanism used. The silent-video trick
+// that used to live here does not work in an iOS home-screen web app (see
+// WebKit bug 254545), and the API itself has been supported in installed PWAs
+// since iOS 18.4.
 let wakeLock = null;
 let wakeLockEnabled = false;
-let noSleepVideo = null;
+let statusEl = null;
+let gestureRetryArmed = false;
+
+const GESTURE_EVENTS = ['pointerdown', 'touchend', 'keydown'];
+
+const STATUS_TEXT = {
+  active: 'Screen staying on',
+  idle: 'Tap to keep screen on',
+  denied: 'Tap to keep screen on',
+  unsupported: 'Screen may sleep',
+};
+
+const STATUS_CLASS = {
+  active: 'is-success',
+  idle: 'is-warning',
+  denied: 'is-warning',
+  unsupported: 'is-light',
+};
+
+function setStatus(state, detail) {
+  console.log('Wake lock:', state, detail || '');
+
+  if (!statusEl) return;
+
+  statusEl.textContent = STATUS_TEXT[state];
+  statusEl.classList.remove('is-success', 'is-warning', 'is-light');
+  statusEl.classList.add(STATUS_CLASS[state]);
+  statusEl.hidden = false;
+}
 
 async function requestWakeLock() {
-  if (!('wakeLock' in navigator)) return false;
+  if (!('wakeLock' in navigator)) {
+    setStatus('unsupported');
+    return false;
+  }
+
+  if (wakeLock) return true;
 
   try {
     wakeLock = await navigator.wakeLock.request('screen');
-    console.log('Wake lock activated');
+    setStatus('active');
 
+    // Fires when the page is hidden, or when the system drops the lock. Do not
+    // re-request from here: the document is typically already hidden by then and
+    // the request would throw. Re-acquisition happens on the visibility path.
     wakeLock.addEventListener('release', () => {
-      console.log('Wake lock released');
       wakeLock = null;
-      // Re-acquire if still enabled and page is visible
-      if (wakeLockEnabled && document.visibilityState === 'visible') {
-        requestWakeLock();
-      }
+      setStatus('idle');
     });
+
     return true;
   } catch (err) {
-    console.error('Wake lock error:', err.name, err.message);
+    wakeLock = null;
+    setStatus('denied', `${err.name}: ${err.message}`);
     return false;
   }
 }
 
-// Fallback for iOS: play a silent video in a loop to prevent sleep
-function enableNoSleepFallback() {
-  if (noSleepVideo) return;
+// Some rejections (notably on iOS) clear once the user interacts with the page,
+// so retry inside a real user gesture rather than giving up.
+function armGestureRetry() {
+  if (gestureRetryArmed || !('wakeLock' in navigator)) return;
+  gestureRetryArmed = true;
 
-  noSleepVideo = document.createElement('video');
-  noSleepVideo.setAttribute('playsinline', '');
-  noSleepVideo.setAttribute('muted', '');
-  noSleepVideo.muted = true;
-  noSleepVideo.loop = true;
-  noSleepVideo.style.position = 'fixed';
-  noSleepVideo.style.top = '-1px';
-  noSleepVideo.style.left = '-1px';
-  noSleepVideo.style.width = '1px';
-  noSleepVideo.style.height = '1px';
-  noSleepVideo.style.opacity = '0.01';
+  const retry = async () => {
+    GESTURE_EVENTS.forEach(evt => document.removeEventListener(evt, retry));
+    gestureRetryArmed = false;
 
-  // Minimal silent MP4 (base64-encoded)
-  // This is a tiny valid MP4 with a silent audio track
-  const silentMp4 = 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAAAhtZGF0AAAA' +
-    'MmWIhAAV//73ye/Apuv5xPASMCHgU3AAAWAAAAMA8gAAAAwAADqYAAAF2hSRnxAAAAARl' +
-    'BQXFhYWJI4IoYuKiosLExsbHBwdHR4eIiIqKjIyOjo+PkREVFRkZHR0fHyIiKioyMjo6P' +
-    'j5ERFRUZGRBAAAABlibXZoZAAAAAAAAAAAAAAAAAAAA+gAAAPoAAEAAAEAAAAAAAAAAAAAAAAB' +
-    'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAB0XRyYWsAAABcdGtoZAAA' +
-    'AAMAAAAAAAAAAAAAAAEAAAAAAAAPoAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA' +
-    'AAAAAAAAAAAAAAAAAAAAIAAB1W1kaWEAAAAgbWRoZAAAAAAAAAAAAAAAAAAAKAAAACgAVcQA' +
-    'AAAAALdoZGxyAAAAAAAAAABzb3VuAAAAAAAAAAAAAAAAU291bmRIYW5kbGVyAAAAARBtaW5m' +
-    'AAAAEHNtaGQAAAAAAAAAAAAAACRkaW5mAAAAHGRyZWYAAAAAAAAAAQAAAAx1cmwgAAAAAQAA' +
-    'ANBzdGJsAAAAZHN0c2QAAAAAAAAAAQAAAFRtcDRhAAAAAAAAAAEAAAAAAAAAAAACABAAAAAA' +
-    'KAAAAAAAAAAAAAAAAAAAAAAAABgZXNkcwAAAAADgICAIQACAASAgIATQBUAAAAAA4CAgAWA' +
-    'gIABAAAAFHN0dHMAAAAAAAAAAQAAAAEAAAAoAAAAFHN0c2MAAAAAAAAAAQAAAAEAAAABAQAA' +
-    'ABRzdHN6AAAAAAAAAAYAAAABAAAAFHNtb28AAAAAAAAAAQAAAAE=';
+    if (!wakeLockEnabled) return;
 
-  noSleepVideo.src = silentMp4;
-  document.body.appendChild(noSleepVideo);
+    const acquired = await requestWakeLock();
+    if (!acquired) armGestureRetry();
+  };
 
-  const playPromise = noSleepVideo.play();
-  if (playPromise) {
-    playPromise.then(() => {
-      console.log('NoSleep fallback video playing');
-    }).catch(() => {
-      // Autoplay blocked — will retry on user interaction
-      console.log('NoSleep fallback: autoplay blocked, waiting for user interaction');
-      const startOnInteraction = () => {
-        if (noSleepVideo && wakeLockEnabled) {
-          noSleepVideo.play().catch(() => {});
-        }
-        document.removeEventListener('touchstart', startOnInteraction);
-        document.removeEventListener('click', startOnInteraction);
-      };
-      document.addEventListener('touchstart', startOnInteraction, { once: true });
-      document.addEventListener('click', startOnInteraction, { once: true });
-    });
-  }
+  GESTURE_EVENTS.forEach(evt => document.addEventListener(evt, retry, { once: true }));
 }
 
-function disableNoSleepFallback() {
-  if (noSleepVideo) {
-    noSleepVideo.pause();
-    noSleepVideo.remove();
-    noSleepVideo = null;
-  }
-}
-
-function isIOS() {
-  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-}
-
-async function enableWakeLock() {
-  wakeLockEnabled = true;
+async function reacquireWakeLock() {
+  if (!wakeLockEnabled) return;
+  if (document.visibilityState !== 'visible') return;
+  if (wakeLock) return;
 
   const acquired = await requestWakeLock();
-
-  // On iOS, the Wake Lock API may be supported but unreliable —
-  // use the video fallback as well
-  if (isIOS()) {
-    enableNoSleepFallback();
-  } else if (!acquired) {
-    // Fallback for browsers without Wake Lock API support
-    enableNoSleepFallback();
-  }
+  if (!acquired) armGestureRetry();
 }
 
-// Re-acquire wake lock when page becomes visible
-function handleVisibilityChange() {
-  if (document.visibilityState === 'visible' && wakeLockEnabled) {
-    if (wakeLock === null) {
-      requestWakeLock();
-    }
-    // Restart video fallback if needed on iOS
-    if (isIOS() && noSleepVideo && noSleepVideo.paused) {
-      noSleepVideo.play().catch(() => {});
-    }
-  }
+function initStatusBadge() {
+  statusEl = document.getElementById('wake-lock-status');
+  if (!statusEl) return;
+
+  statusEl.addEventListener('click', () => {
+    if (!wakeLock) reacquireWakeLock();
+  });
 }
 
-document.addEventListener('visibilitychange', handleVisibilityChange);
+// Called only from the recipe layout, so navigational pages never take a lock.
+async function enableWakeLock() {
+  if (wakeLockEnabled) return;
+  wakeLockEnabled = true;
+
+  initStatusBadge();
+
+  document.addEventListener('visibilitychange', reacquireWakeLock);
+  // iOS restores pages from the back/forward cache without always firing
+  // visibilitychange, so listen for pageshow too.
+  window.addEventListener('pageshow', reacquireWakeLock);
+
+  const acquired = await requestWakeLock();
+  if (!acquired) armGestureRetry();
+}
 
 // Recipe scaling functionality
 function initRecipeScaling() {
