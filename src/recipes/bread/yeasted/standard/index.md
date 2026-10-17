@@ -1,5 +1,5 @@
 ---
-title: The Standard #2
+title: "The Standard #2"
 ---
 
 ## Ingredients
