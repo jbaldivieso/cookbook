@@ -37,6 +37,7 @@ export default function(eleventyConfig) {
       breadcrumbs.push({
         title: findTitle(navigation, crumbUrl) || fallback,
         url: crumbUrl,
+        tab: i === 0 ? tabSlug(crumbUrl) : null,
         isLast: i === segments.length - 1
       });
     }
@@ -50,32 +51,37 @@ export default function(eleventyConfig) {
     return str.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
   });
 
-  // Add getChildren filter
-  eleventyConfig.addFilter("getChildren", function(navigation, categoryUrl) {
-    function findCategory(items, url) {
-      for (const item of items) {
-        if (item.url === url) return item.children;
-        if (item.children.length) {
-          const found = findCategory(item.children, url);
-          if (found !== null) return found;
-        }
+  // Shape the navigation tree into homepage tabs: one per top-level category,
+  // each listing its own recipes first, then every nested category flattened
+  // into a labelled group ("Sourdough", "Sourdough / Rye").
+  eleventyConfig.addFilter("catalogTabs", function(navigation = []) {
+    function groupsFor(items, trail = []) {
+      const recipes = items.filter(item => !item.isCategory)
+        .map(({ title, url }) => ({ title, url }));
+      const groups = recipes.length ? [{ title: trail.join(' / '), recipes }] : [];
+      for (const item of items.filter(item => item.isCategory)) {
+        groups.push(...groupsFor(item.children, [...trail, item.title]));
       }
-      return null;
+      return groups;
     }
-    return findCategory(navigation, categoryUrl) || [];
-  });
 
-  // Add categoriesOnly filter
-  eleventyConfig.addFilter("categoriesOnly", function(items) {
-    function filterCategories(items) {
-      return items
-        .filter(item => item.isCategory)
-        .map(item => ({
-          ...item,
-          children: filterCategories(item.children)
-        }));
+    const tabs = navigation.filter(item => item.isCategory).map(category => {
+      const groups = groupsFor(category.children);
+      return {
+        title: category.title,
+        slug: tabSlug(category.url),
+        count: groups.reduce((sum, group) => sum + group.recipes.length, 0),
+        groups
+      };
+    });
+
+    // Recipes filed directly under src/recipes/ still need a home
+    const loose = groupsFor(navigation.filter(item => !item.isCategory));
+    if (loose.length) {
+      tabs.push({ title: 'Other', slug: 'other', count: loose[0].recipes.length, groups: loose });
     }
-    return filterCategories(items);
+
+    return tabs.filter(tab => tab.count);
   });
 
   // Group a recipe's rendered Markdown into one <section> per h2. Ingredient
@@ -121,6 +127,11 @@ export default function(eleventyConfig) {
 
     return `${preamble}<div class="recipe-columns${primary.length ? '' : ' is-single'}">${columns}</div>`;
   });
+
+  // "/recipes/other_baked_goods/" -> "other-baked-goods", the homepage tab id
+  function tabSlug(url) {
+    return url.split('/').filter(Boolean).pop().replace(/_/g, '-');
+  }
 
   function scaleControl(sectionId) {
     const buttons = [1, 2, 3].map(n =>

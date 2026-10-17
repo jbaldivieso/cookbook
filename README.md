@@ -5,7 +5,8 @@ propped up on the counter.
 
 ## Features
 
-- Recipes organized into nested categories, with navigation generated from the folder tree
+- Recipes organized into nested categories from the folder tree, browsed on a tabbed
+  homepage (one tab per top-level category) with search by recipe name
 - Scale ingredient amounts (1x / 2x / 3x) with a per-section toggle; the choice is remembered per recipe
 - Tap an ingredient line to cross it out as you go
 - Keeps the screen awake while a recipe is open (Wake Lock API), with a switch to turn it off
@@ -34,12 +35,11 @@ when the bundles change.
 
 ```
 src/
-  _data/         # Global data: navigation.js (folder tree), categories.js
-  _includes/     # header.njk, footer.njk, nav-tree.njk
-  _layouts/      # base.njk, recipe.njk, category.njk
+  _data/         # Global data: navigation.js (folder tree)
+  _includes/     # header.njk, footer.njk, breadcrumbs.njk
+  _layouts/      # base.njk, recipe.njk
   recipes/       # Recipe markdown, nested in category folders
-  index.html     # Homepage (category list)
-  categories.njk # Paginated template that renders one page per category
+  index.html     # Homepage: category tabs and recipe-name search
   main.js        # JS entry point (imports Bulma + custom.css)
   custom.css     # Custom CSS variables and overrides
   manifest.json  # PWA manifest

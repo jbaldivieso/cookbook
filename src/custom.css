@@ -30,7 +30,7 @@
   --paper: #ffffff;
 
   --page-max: 1120px;
-  --gutter: 40px;
+  --gutter: max(40px, env(safe-area-inset-left), env(safe-area-inset-right));
   --page-edge: max(var(--gutter), (100% - var(--page-max)) / 2);
 
   --bulma-family-primary: "Archivo", system-ui, sans-serif;
@@ -40,7 +40,7 @@
 
 @media (max-width: 768px) {
   :root {
-    --gutter: 18px;
+    --gutter: max(18px, env(safe-area-inset-left), env(safe-area-inset-right));
   }
 }
 
@@ -72,52 +72,41 @@ a:hover {
   color: var(--ink);
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* Header */
 .site-header {
   position: relative;
   overflow-x: clip;
 }
 
-.navbar {
-  --bulma-navbar-background-color: var(--paper);
+.header-bar {
+  display: flex;
+  align-items: center;
   min-height: 72px;
   padding-inline: var(--page-edge);
   border-bottom: 3px solid var(--form);
 }
 
-.navbar-brand,
-.navbar-tabs {
-  min-height: 72px;
-}
-
-.navbar-start {
-  margin-inline-start: -0.75rem;
-}
-
-.navbar-item,
-.navbar-link {
+.header-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-weight: 600;
   font-size: 1.1875rem;
   color: var(--ink);
+  text-decoration: none;
 }
 
-.site-header a.navbar-item:hover,
-.site-header a.navbar-item:focus,
-.site-header .navbar-link:hover,
-.site-header .navbar-item.has-dropdown:hover .navbar-link,
-.site-header .navbar-item.has-dropdown.is-active .navbar-link {
-  background-color: transparent;
+.header-link:hover {
   color: var(--form);
-}
-
-.navbar-link:not(.is-arrowless)::after {
-  border-color: var(--form);
-}
-
-.navbar-burger {
-  margin-inline-start: -0.75rem;
-  margin-inline-end: auto;
-  color: var(--ink);
 }
 
 /* The whisk: oversized, cropped by the top and right edges, hovering over the
@@ -175,10 +164,6 @@ a:hover {
   --whisk-grip: var(--paper);
   --whisk-weight: 7;
   --whisk-grip-weight: 7;
-}
-
-.site-header:has(.navbar-menu.is-active) .whisk-mark {
-  visibility: hidden;
 }
 
 @media (max-width: 768px) {
@@ -240,12 +225,6 @@ a:hover {
 .crumbs + .page-title,
 .crumbs + .title-row {
   margin-top: 12px;
-}
-
-.page-description {
-  margin-top: 10px;
-  font-size: 1.25rem;
-  color: var(--ink-soft);
 }
 
 .title-row {
@@ -549,38 +528,385 @@ a:hover {
   color: var(--ink-soft);
 }
 
-/* Home and category indexes */
-.toc {
+/* Homepage catalog: square printed tabs over the active category's recipes,
+   and a find field that matches recipe names across every tab. Without JS the
+   tabs and field stay hidden and every category is listed in turn. */
+.icon-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.glyph {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.catalog-find {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 560px;
+  min-height: 56px;
+  padding: 0 4px 0 16px;
+  border: 2px solid var(--form);
+  border-radius: 4px;
+  color: var(--form);
+}
+
+.catalog-find:focus-within {
+  outline: 3px solid var(--form);
+  outline-offset: 2px;
+}
+
+.catalog-find input {
+  flex: 1;
+  min-width: 0;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 1.3125rem;
+  color: var(--ink);
+  caret-color: var(--form);
+  outline: none;
+}
+
+.catalog-find input::placeholder {
+  color: var(--ink-soft);
+  opacity: 1;
+}
+
+.catalog-find input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.catalog-clear {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--form);
+  cursor: pointer;
+  transition: none;
+}
+
+.catalog-clear:hover {
+  color: var(--ink);
+}
+
+.catalog-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+  border-bottom: 2px solid var(--form);
+}
+
+.catalog-tabs [role="tab"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 58px;
+  padding: 0 22px;
+  border: 1.5px solid var(--form-rule);
+  border-bottom: 0;
+  border-radius: 4px 4px 0 0;
+  background: var(--paper);
+  font: inherit;
+  font-weight: 700;
+  font-size: 1.375rem;
+  line-height: 1.1;
+  color: var(--form);
+  cursor: pointer;
+  /* Bulma fades every button; state changes here are instant */
+  transition: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) {
+  .catalog-tabs [role="tab"]:hover {
+    border-color: var(--form);
+  }
+}
+
+.catalog-tabs [role="tab"][aria-selected="true"] {
+  border-color: var(--ink);
+  background: var(--highlighter);
+  color: var(--ink);
+}
+
+.catalog-tab-count {
+  font-weight: 600;
+  font-size: 0.75em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+}
+
+[aria-selected="true"] .catalog-tab-count {
+  color: var(--ink);
+}
+
+/* While searching, results come from every tab, so no tab reads as chosen */
+.is-searching .catalog-tabs [role="tab"][aria-selected] {
+  border-color: var(--form-rule);
+  background: var(--paper);
+  color: var(--ink-soft);
+}
+
+.is-searching .catalog-tab-count {
+  color: var(--ink-soft);
+}
+
+.catalog-status {
+  margin-top: 22px;
+  font-size: 1.125rem;
+  color: var(--ink-soft);
+}
+
+.catalog-status b {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.catalog-status:empty {
+  display: none;
+}
+
+.catalog-panels {
   margin-top: 28px;
 }
 
-.toc ul {
+.catalog-status:not(:empty) + .catalog-panels {
+  margin-top: 10px;
+}
+
+/* The layout rules below set display, which would otherwise beat [hidden] */
+.catalog [hidden] {
+  display: none !important;
+}
+
+/* A category's groups sit in two columns */
+.catalog-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px 56px;
+  align-content: start;
+}
+
+.catalog-panel + .catalog-panel {
+  margin-top: 48px;
+}
+
+.catalog-title {
+  grid-column: 1 / -1;
+  font-weight: 800;
+  font-size: 2.625rem;
+  font-stretch: 90%;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+/* On wider screens the selected tab already names the category */
+.is-tabbed:not(.is-searching) .catalog-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.catalog-label,
+.is-searching .catalog-title {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  font-stretch: 125%;
+  line-height: 1.3;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--form);
+}
+
+/* Search results: one column per category, without the sub-category labels */
+.is-searching .catalog-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px 56px;
+  align-items: start;
+}
+
+.is-searching .catalog-panel {
+  display: block;
+  margin: 0;
+}
+
+.is-searching .catalog-label {
+  display: none;
+}
+
+.catalog-list {
   margin: 0;
   padding: 0;
   list-style: none;
+  border-top: 1px solid var(--form-rule);
 }
 
-.toc ul ul {
-  margin: 4px 0 10px 6px;
-  padding-inline-start: 18px;
-  border-inline-start: 2px solid var(--form-rule);
+.is-searching .catalog-group + .catalog-group .catalog-list {
+  border-top: 0;
 }
 
-.toc li {
-  font-size: 1.5rem;
-  line-height: 1.3;
-}
-
-.toc a {
-  display: inline-block;
-  padding: 6px 0;
+.catalog-list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 64px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--form-rule);
+  font-weight: 700;
+  font-size: 1.625rem;
+  line-height: 1.15;
   color: var(--ink);
   text-decoration: none;
 }
 
-.toc a:hover {
+.catalog-list a .glyph {
   color: var(--form);
+}
+
+.catalog-list a:hover .catalog-name {
   text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--form);
+}
+
+.catalog-name mark {
+  padding: 0;
+  background: var(--highlighter);
+  color: var(--ink);
+}
+
+@media (max-width: 768px) {
+  /* Stops short of the whisk, which dips below the header rule here */
+  .catalog-find {
+    max-width: none;
+    min-height: 52px;
+    margin-inline-end: 92px;
+  }
+
+  .catalog-find input {
+    height: 48px;
+    font-size: 1.1875rem;
+  }
+
+  /* Phones get the tabs as a bottom bar, in thumb reach. It holds about four
+     top-level categories; past that, switch phones to stacked full-width tabs
+     (see .impeccable/mocks/tabs/b-stacked.html) rather than squeezing labels. */
+  .catalog-tabs {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 30;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 6px;
+    margin: 0;
+    padding: 8px max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+    border-top: 3px solid var(--form);
+    border-bottom: 0;
+    background: var(--paper);
+  }
+
+  .catalog-tabs [role="tab"],
+  .is-searching .catalog-tabs [role="tab"][aria-selected] {
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    min-height: 62px;
+    padding: 4px 6px;
+    border: 1.5px solid transparent;
+    border-radius: 4px;
+    font-size: 1rem;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .catalog-tabs [role="tab"][aria-selected="true"] {
+    border-color: var(--ink);
+  }
+
+  .catalog-tab-count {
+    font-size: 0.8125rem;
+  }
+
+  .catalog.is-tabbed {
+    padding-bottom: calc(120px + env(safe-area-inset-bottom));
+  }
+
+  .catalog-panel,
+  .is-searching .catalog-panels {
+    display: block;
+  }
+
+  .catalog-panels {
+    margin-top: 22px;
+  }
+
+  /* With the tabs at the bottom, the category name heads the page */
+  .is-tabbed:not(.is-searching) .catalog-title {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+  }
+
+  .catalog-title {
+    margin-bottom: 10px;
+  }
+
+  .catalog-group + .catalog-group,
+  .is-searching .catalog-panel + .catalog-panel {
+    margin-top: 22px;
+  }
+
+  .is-searching .catalog-group + .catalog-group {
+    margin-top: 0;
+  }
+
+  .catalog-label,
+  .is-searching .catalog-title {
+    min-height: 40px;
+    font-size: 0.8125rem;
+  }
+
+  .catalog-list a {
+    min-height: 58px;
+    font-size: 1.375rem;
+  }
 }
 
 /* Footer */

@@ -113,7 +113,7 @@
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "Recipe or category title, one per page; 90% width."
+        "purpose": "Recipe title, one per page; 90% width. The homepage's phone-only category title uses the 42px size."
       },
       "display-compact": {
         "displayName": "Display (phone)",
@@ -121,7 +121,7 @@
       },
       "section-label": {
         "displayName": "Section Label",
-        "purpose": "Section h2s (Ingredients, Timing, Source); expanded caps in Form Blue."
+        "purpose": "Recipe section h2s and catalog group labels; expanded caps in Form Blue."
       },
       "crumb": {
         "displayName": "Crumb",
@@ -145,15 +145,51 @@
       },
       "control": {
         "displayName": "Control",
-        "purpose": "Nav items; switch label at 1.125rem; scale numerals at 800."
+        "purpose": "The header's Recipes link; switch label at 1.125rem; scale numerals at 800."
       },
       "note": {
         "displayName": "Note",
-        "purpose": "Source section, Soft Ink."
+        "purpose": "Source section and the catalog search status line, Soft Ink."
       },
       "small": {
         "displayName": "Small",
         "purpose": "Footer hint, Soft Ink."
+      },
+      "find": {
+        "displayName": "Find",
+        "purpose": "Find field input, Ink with Soft Ink placeholder."
+      },
+      "find-compact": {
+        "displayName": "Find (phone)",
+        "purpose": "Find field input at 768px and below."
+      },
+      "tab": {
+        "displayName": "Tab",
+        "purpose": "Desktop category tab labels."
+      },
+      "tab-compact": {
+        "displayName": "Tab (phone)",
+        "purpose": "Bottom tab bar labels."
+      },
+      "tab-count": {
+        "displayName": "Tab Count",
+        "purpose": "Recipe count beside a desktop tab label; Soft Ink, Ink when selected."
+      },
+      "tab-count-compact": {
+        "displayName": "Tab Count (phone)",
+        "purpose": "Recipe count under a bottom-bar tab label."
+      },
+      "section-label-compact": {
+        "displayName": "Section Label (phone)",
+        "purpose": "Catalog group labels at 768px and below."
+      },
+      "catalog-row": {
+        "displayName": "Catalog Row",
+        "purpose": "Recipe names in the homepage catalog."
+      },
+      "catalog-row-compact": {
+        "displayName": "Catalog Row (phone)",
+        "purpose": "Recipe names at 768px and below."
       }
     },
     "fonts": [
@@ -176,7 +212,7 @@
       {
         "name": "row-rule",
         "value": "1px solid #c9d6ec",
-        "purpose": "Between ingredient rows, under the title row, above the footer."
+        "purpose": "Between ingredient and catalog rows, under the title row, above the footer."
       },
       {
         "name": "control-border",
@@ -192,35 +228,55 @@
         "name": "focus-ring",
         "value": "outline: 3px solid #2f5fae; outline-offset: 2px",
         "purpose": "Every :focus-visible."
+      },
+      {
+        "name": "find-border",
+        "value": "2px solid #2f5fae",
+        "purpose": "Find field box, 4px corners."
+      },
+      {
+        "name": "tab-rule",
+        "value": "2px solid #2f5fae",
+        "purpose": "Rule the desktop tabs stand on."
+      },
+      {
+        "name": "tab-border",
+        "value": "1.5px solid #c9d6ec",
+        "purpose": "Resting desktop tab (no bottom edge); Form Blue on hover, Ink when selected."
+      },
+      {
+        "name": "tab-bar-rule",
+        "value": "3px solid #2f5fae",
+        "purpose": "Top rule of the phone bottom tab bar."
       }
     ],
     "motion": [
       {
         "name": "switch",
         "value": "0.15s ease-out",
-        "purpose": "Wake switch track fill and knob slide; the only transition."
+        "purpose": "Wake switch track fill and knob slide; the only designed transition."
       },
       {
         "name": "instant",
         "value": "none",
-        "purpose": "Scale selection, cross-off and nav hover change instantly; no entrance motion."
+        "purpose": "Scale selection, tab changes, search and cross-off change instantly; catalog controls set transition: none against Bulma's 294ms button fade. No entrance motion."
+      },
+      {
+        "name": "bulma-inherited (drift)",
+        "value": "294ms",
+        "purpose": "Pre-existing drift: recipe scale buttons still inherit Bulma's button fade; not part of the system."
       }
     ],
     "breakpoints": [
       {
         "name": "phone",
         "value": "768px",
-        "purpose": "max-width: 18px gutter, 42px title, title row stacks, whisk 180px."
+        "purpose": "max-width: 18px gutter, 42px title, title row stacks, whisk 180px; catalog moves tabs to a fixed bottom bar, shows the category title, stacks groups."
       },
       {
         "name": "stack",
         "value": "899px",
         "purpose": "max-width: recipe columns stack."
-      },
-      {
-        "name": "desktop-nav",
-        "value": "1024px",
-        "purpose": "Bulma navbar burger below this (provisional nav)."
       }
     ],
     "identity": {
@@ -235,19 +291,38 @@
     "status": {
       "designed": [
         "recipe page",
+        "homepage catalog",
         "header",
         "footer",
         "breadcrumb"
       ],
-      "provisional": [
-        "header nav items and dropdowns"
+      "provisional": [],
+      "undesigned": [],
+      "removed": [
+        "category listing pages",
+        "Bulma navbar and dropdowns"
       ],
-      "undesigned": [
-        "home page",
-        "category pages",
-        "index lists (.toc)"
-      ],
-      "theme": "light only (data-theme=light, color-scheme light)"
+      "theme": "light only (data-theme=light, color-scheme light); Bulma supplies only its base reset"
+    },
+    "icons": {
+      "style": "authored line glyphs",
+      "size": "24px",
+      "stroke": 2.25,
+      "linecap": "round",
+      "linejoin": "round",
+      "fill": "none",
+      "color": "currentColor (Form Blue in use)",
+      "set": [
+        "find",
+        "clear",
+        "arrow (go)"
+      ]
+    },
+    "catalog": {
+      "tabMemory": "URL hash, then localStorage, then first tab",
+      "phoneTabCapacity": "about four top-level categories; past that, stacked full-width tabs (.impeccable/mocks/tabs/b-stacked.html)",
+      "search": "recipe names only, all words, across all tabs",
+      "noJs": "every category stacked; find and tabs hidden"
     }
   },
   "components": [
@@ -295,20 +370,53 @@
       "name": "Header with Whisk Mark",
       "kind": "nav",
       "refersTo": "header-bar",
-      "description": "72px Paper bar with a 3px Form Blue rule; the oversized whisk dips in from the top-right, cutting the rule with a Paper halo. Nav items are provisional.",
-      "html": "<header class=\"ds-header\"><a class=\"ds-whisk\" href=\"#\" aria-label=\"Cookbook home\"><svg viewBox=\"-40 -40 80 80\" aria-hidden=\"true\"><defs><g id=\"ds-whisk\"><path class=\"ds-wire\" d=\"M2.6 37C3.6 30 9.6 17 9.6 8.5C9.6 3.2 5.4 0 0 0C-5.4 0 -9.6 3.2 -9.6 8.5C-9.6 17 -3.6 30 -2.6 37\"/><path class=\"ds-wire\" d=\"M1.4 37C2.2 30 5.4 17 5.4 8.5C5.4 3.5 3.2 0 0 0C-3.2 0 -5.4 3.5 -5.4 8.5C-5.4 17 -2.2 30 -1.4 37\"/><path class=\"ds-wire\" d=\"M0 37V0\"/><rect class=\"ds-ferrule\" x=\"-3.4\" y=\"35.5\" width=\"6.8\" height=\"4.5\" rx=\"1.2\"/><path class=\"ds-grip\" d=\"M-2.7 40.6L-3.3 57.2Q-3.3 60.3 0 60.3Q3.3 60.3 3.3 57.2L2.7 40.6Z\"/></g></defs><g transform=\"rotate(220) translate(0 -30)\"><use href=\"#ds-whisk\" class=\"ds-halo\"/><use href=\"#ds-whisk\"/></g></svg></a><nav class=\"ds-bar\"><a href=\"#\">Home</a><a href=\"#\">Bread</a><a href=\"#\">Other Baked Goods</a></nav></header>",
-      "css": ":host{--ink:#16181d;--ink-soft:#5b6170;--ink-done:#a3a8b3;--form:#2f5fae;--form-rule:#c9d6ec;--highlighter:#e4f53a;--paper:#ffffff;} .ds-header{position:relative;overflow:hidden;height:150px;font-family:Archivo,system-ui,sans-serif;} .ds-bar{display:flex;align-items:center;gap:24px;min-height:72px;padding:0 24px;border-bottom:3px solid var(--form);background:var(--paper);} .ds-bar a{font-weight:600;font-size:1.1875rem;color:var(--ink);text-decoration:none;} .ds-bar a:hover{color:var(--form);} .ds-bar a:focus-visible{outline:3px solid var(--form);outline-offset:2px;} .ds-whisk{position:absolute;z-index:2;top:-61px;right:-60px;width:240px;height:240px;pointer-events:none;} .ds-whisk svg{display:block;width:100%;height:100%;overflow:visible;} .ds-whisk use{pointer-events:visiblePainted;} .ds-wire{fill:none;stroke:var(--w-ink,var(--form));stroke-width:var(--w-weight,2.5);stroke-linecap:round;stroke-linejoin:round;} .ds-ferrule{fill:var(--w-ink,var(--form));stroke:var(--w-outline,none);stroke-width:var(--w-weight,0);} .ds-grip{fill:var(--w-grip,var(--highlighter));stroke:var(--w-ink,var(--form));stroke-width:var(--w-grip-weight,2);stroke-linejoin:round;} .ds-halo{--w-ink:var(--paper);--w-outline:var(--paper);--w-grip:var(--paper);--w-weight:7;--w-grip-weight:7;}"
+      "description": "72px Paper bar with a 3px Form Blue rule and, off the homepage, a single Recipes link; the oversized whisk dips in from the top-right as the home link, cutting the rule with a Paper halo.",
+      "html": "<header class=\"ds-header\"><a class=\"ds-whisk\" href=\"#\" aria-label=\"Cookbook home\"><svg viewBox=\"-40 -40 80 80\" aria-hidden=\"true\"><defs><g id=\"ds-whisk\"><path class=\"ds-wire\" d=\"M2.6 37C3.6 30 9.6 17 9.6 8.5C9.6 3.2 5.4 0 0 0C-5.4 0 -9.6 3.2 -9.6 8.5C-9.6 17 -3.6 30 -2.6 37\"/><path class=\"ds-wire\" d=\"M1.4 37C2.2 30 5.4 17 5.4 8.5C5.4 3.5 3.2 0 0 0C-3.2 0 -5.4 3.5 -5.4 8.5C-5.4 17 -2.2 30 -1.4 37\"/><path class=\"ds-wire\" d=\"M0 37V0\"/><rect class=\"ds-ferrule\" x=\"-3.4\" y=\"35.5\" width=\"6.8\" height=\"4.5\" rx=\"1.2\"/><path class=\"ds-grip\" d=\"M-2.7 40.6L-3.3 57.2Q-3.3 60.3 0 60.3Q3.3 60.3 3.3 57.2L2.7 40.6Z\"/></g></defs><g transform=\"rotate(220) translate(0 -30)\"><use href=\"#ds-whisk\" class=\"ds-halo\"/><use href=\"#ds-whisk\"/></g></svg></a><div class=\"ds-bar\"><a href=\"#\">Recipes</a></div></header>",
+      "css": ":host{--ink:#16181d;--ink-soft:#5b6170;--ink-done:#a3a8b3;--form:#2f5fae;--form-rule:#c9d6ec;--highlighter:#e4f53a;--paper:#ffffff;} .ds-header{position:relative;overflow:hidden;height:150px;font-family:Archivo,system-ui,sans-serif;} .ds-bar{display:flex;align-items:center;gap:24px;min-height:72px;padding:0 24px;border-bottom:3px solid var(--form);background:var(--paper);} .ds-bar a{display:inline-flex;align-items:center;min-height:44px;font-weight:600;font-size:1.1875rem;color:var(--ink);text-decoration:none;} .ds-bar a:hover{color:var(--form);} .ds-bar a:focus-visible{outline:3px solid var(--form);outline-offset:2px;} .ds-whisk{position:absolute;z-index:2;top:-61px;right:-60px;width:240px;height:240px;pointer-events:none;} .ds-whisk svg{display:block;width:100%;height:100%;overflow:visible;} .ds-whisk use{pointer-events:visiblePainted;} .ds-wire{fill:none;stroke:var(--w-ink,var(--form));stroke-width:var(--w-weight,2.5);stroke-linecap:round;stroke-linejoin:round;} .ds-ferrule{fill:var(--w-ink,var(--form));stroke:var(--w-outline,none);stroke-width:var(--w-weight,0);} .ds-grip{fill:var(--w-grip,var(--highlighter));stroke:var(--w-ink,var(--form));stroke-width:var(--w-grip-weight,2);stroke-linejoin:round;} .ds-halo{--w-ink:var(--paper);--w-outline:var(--paper);--w-grip:var(--paper);--w-weight:7;--w-grip-weight:7;}"
+    },
+    {
+      "name": "Find Field",
+      "kind": "input",
+      "refersTo": "find-field",
+      "description": "Name-only search across every tab: 2px Form Blue box with find glyph and a 44px clear button.",
+      "html": "<div class=\"ds-find\" role=\"search\"><svg class=\"ds-glyph\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"10\" cy=\"10\" r=\"6.5\"/><path d=\"M15 15l5.5 5.5\"/></svg><input type=\"search\" placeholder=\"Recipe name\" aria-label=\"Find a recipe by name\" value=\"sour pan\"><button type=\"button\" class=\"ds-clear\" aria-label=\"Clear search\"><svg class=\"ds-glyph\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6L6 18\"/></svg></button></div><p class=\"ds-status\"><b>1 recipe</b> has “sour pan” in the name, across all tabs.</p>",
+      "css": ":host{--ink:#16181d;--ink-soft:#5b6170;--ink-done:#a3a8b3;--form:#2f5fae;--form-rule:#c9d6ec;--highlighter:#e4f53a;--paper:#ffffff;} .ds-glyph{flex:none;width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round;} .ds-find{display:flex;align-items:center;gap:12px;max-width:560px;min-height:56px;padding:0 4px 0 16px;border:2px solid var(--form);border-radius:4px;color:var(--form);font-family:Archivo,system-ui,sans-serif;} .ds-find:focus-within{outline:3px solid var(--form);outline-offset:2px;} .ds-find input{flex:1;min-width:0;height:52px;padding:0;border:0;background:none;font:inherit;font-size:1.3125rem;color:var(--ink);caret-color:var(--form);outline:none;} .ds-find input::placeholder{color:var(--ink-soft);} .ds-find input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;} .ds-clear{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:4px;background:none;color:var(--form);cursor:pointer;transition:none;} .ds-clear:hover{color:var(--ink);} .ds-clear:focus-visible{outline:3px solid var(--form);outline-offset:2px;} .ds-status{margin:22px 0 0;font-family:Archivo,system-ui,sans-serif;font-size:1.125rem;color:var(--ink-soft);} .ds-status b{font-weight:700;color:var(--ink);}"
+    },
+    {
+      "name": "Category Tabs",
+      "kind": "nav",
+      "refersTo": "catalog-tab-active",
+      "description": "Desktop square tabs on a 2px Form Blue rule; the selected tab is Highlighter with an Ink border.",
+      "html": "<div class=\"ds-tabs\" role=\"tablist\" aria-label=\"Categories\"><button type=\"button\" role=\"tab\" aria-selected=\"true\">Bread <span class=\"ds-count\">5</span></button><button type=\"button\" role=\"tab\" aria-selected=\"false\">Other Baked Goods <span class=\"ds-count\">3</span></button></div>",
+      "css": ":host{--ink:#16181d;--ink-soft:#5b6170;--ink-done:#a3a8b3;--form:#2f5fae;--form-rule:#c9d6ec;--highlighter:#e4f53a;--paper:#ffffff;} .ds-tabs{display:flex;flex-wrap:wrap;gap:8px;border-bottom:2px solid var(--form);font-family:Archivo,system-ui,sans-serif;} .ds-tabs [role=tab]{display:inline-flex;align-items:center;gap:10px;min-height:58px;padding:0 22px;border:1.5px solid var(--form-rule);border-bottom:0;border-radius:4px 4px 0 0;background:var(--paper);font:inherit;font-weight:700;font-size:1.375rem;line-height:1.1;color:var(--form);cursor:pointer;transition:none;} .ds-tabs [role=tab]:hover{border-color:var(--form);} .ds-tabs [role=tab]:focus-visible{outline:3px solid var(--form);outline-offset:2px;} .ds-tabs [role=tab][aria-selected=true]{border-color:var(--ink);background:var(--highlighter);color:var(--ink);} .ds-count{font-weight:600;font-size:.75em;font-variant-numeric:tabular-nums;color:var(--ink-soft);} [aria-selected=true] .ds-count{color:var(--ink);}"
+    },
+    {
+      "name": "Phone Bottom Tab Bar",
+      "kind": "nav",
+      "refersTo": "bottom-tab-active",
+      "description": "At 768px and below the tabs become a fixed bottom bar: 3px Form Blue top rule, equal cells, active cell Highlighter with an Ink border, safe-area padding. Holds about four categories; past that, stacked full-width tabs.",
+      "html": "<div class=\"ds-bar\" role=\"tablist\" aria-label=\"Categories\"><button type=\"button\" role=\"tab\" aria-selected=\"true\">Bread<span class=\"ds-count\">5</span></button><button type=\"button\" role=\"tab\" aria-selected=\"false\">Other Baked Goods<span class=\"ds-count\">3</span></button></div>",
+      "css": ":host{--ink:#16181d;--ink-soft:#5b6170;--ink-done:#a3a8b3;--form:#2f5fae;--form-rule:#c9d6ec;--highlighter:#e4f53a;--paper:#ffffff;} .ds-bar{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;max-width:390px;padding:8px max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));border-top:3px solid var(--form);background:var(--paper);font-family:Archivo,system-ui,sans-serif;} .ds-bar [role=tab]{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:62px;padding:4px 6px;border:1.5px solid transparent;border-radius:4px;background:var(--paper);font:inherit;font-weight:700;font-size:1rem;line-height:1.1;text-align:center;text-wrap:balance;color:var(--form);cursor:pointer;transition:none;} .ds-bar [role=tab]:focus-visible{outline:3px solid var(--form);outline-offset:2px;} .ds-bar [role=tab][aria-selected=true]{border-color:var(--ink);background:var(--highlighter);color:var(--ink);} .ds-count{font-weight:600;font-size:.8125rem;font-variant-numeric:tabular-nums;color:var(--ink-soft);} [aria-selected=true] .ds-count{color:var(--ink);}"
+    },
+    {
+      "name": "Catalog Rows",
+      "kind": "custom",
+      "refersTo": "catalog-row",
+      "description": "Form Blue group label over 64px ruled recipe rows with a Form Blue arrow glyph; search matches marked in Highlighter.",
+      "html": "<div class=\"ds-group\"><h3>Sourdough</h3><ul><li><a href=\"#\"><span class=\"ds-name\">Pain de campagne</span><svg class=\"ds-glyph\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h15M13 6l6 6-6 6\"/></svg></a></li><li><a href=\"#\"><span class=\"ds-name\">Classic <mark>Sour</mark>dough <mark>Pan</mark>cakes</span><svg class=\"ds-glyph\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h15M13 6l6 6-6 6\"/></svg></a></li></ul></div>",
+      "css": ":host{--ink:#16181d;--ink-soft:#5b6170;--ink-done:#a3a8b3;--form:#2f5fae;--form-rule:#c9d6ec;--highlighter:#e4f53a;--paper:#ffffff;} .ds-glyph{flex:none;width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round;} .ds-group{max-width:532px;font-family:Archivo,system-ui,sans-serif;} .ds-group h3{display:flex;align-items:center;min-height:44px;margin:0;font-weight:700;font-size:.875rem;font-stretch:125%;line-height:1.3;letter-spacing:.16em;text-transform:uppercase;color:var(--form);} .ds-group ul{margin:0;padding:0;list-style:none;border-top:1px solid var(--form-rule);} .ds-group a{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px;padding:10px 0;border-bottom:1px solid var(--form-rule);font-weight:700;font-size:1.625rem;line-height:1.15;color:var(--ink);text-decoration:none;} .ds-group a .ds-glyph{color:var(--form);} .ds-group a:hover .ds-name{text-decoration:underline;text-decoration-thickness:2px;text-decoration-color:var(--form);} .ds-group a:focus-visible{outline:3px solid var(--form);outline-offset:2px;} .ds-name mark{padding:0;background:var(--highlighter);color:var(--ink);}"
     }
   ],
   "narrative": {
     "northStar": "Form Ink",
-    "overview": "**Creative North Star: \"Form Ink\"**\n\nThe standard modern recipe page (title, ingredients on the left, numbered timing on the right, one scale switch, one screen-on switch), printed like a bakery production form. The ground is white bond and the ink is near-black. Everything that is *printed structure* (the header rule, the wide-tracked capital labels, the step numerals, the breadcrumb, links, focus rings) is in one form blue. Everything that is *active right now* (the chosen scale, the switch knob when the screen is being held on, selected text) is marked in highlighter. The cook's own words sit on the form at counter-reading size, with the amounts set heaviest so the eye finds the number first.\n\nThe world is ruled, not raised. Rows are divided by thin pale-blue rules, the header by a 3px form-blue rule, and there are no cards, chips, shadows or photographs. A single variable family, Archivo, does all the lettering; its width axis carries role, condensed for the title and expanded for the labels. The site's identity is an oversized whisk, drawn to the owner's own whisk, that dips in from the top-right edge and crosses the header rule. It stands in for a wordmark (\"Cookbook\" remains only the manifest and document name).\n\nIt refuses the food-blog card and the bookish notebook alike. Light mode only: `data-theme=\"light\"` and `color-scheme: light` switch off Bulma's dark scheme, and dark mode is not designed.\n\nScope of evidence: the recipe page and the shared header and footer are designed. The home and category pages inherit the header, type and colors but have not been designed yet; their current index-list styling is a placeholder, not a pattern. The header nav items are provisional, pending a separate navigation redesign.",
+    "overview": "**Creative North Star: \"Form Ink\"**\n\nThe standard modern recipe page (title, ingredients on the left, numbered timing on the right, one scale switch, one screen-on switch), printed like a bakery production form, and a homepage catalog filed like a tabbed register: square printed tabs, one category's recipes as large ruled rows, and a find field that reaches across every tab. The ground is white bond and the ink is near-black. Everything that is *printed structure* (the header rule, the wide-tracked capital labels, the step numerals, the breadcrumb, links, focus rings) is in one form blue. Everything that is *active right now* (the chosen scale, the selected catalog tab, the letters a search matched, the switch knob when the screen is being held on, selected text) is marked in highlighter. The cook's own words sit on the form at counter-reading size, with the amounts set heaviest so the eye finds the number first.\n\nThe world is ruled, not raised. Rows are divided by thin pale-blue rules, the header by a 3px form-blue rule, and there are no cards, chips, shadows or photographs. A single variable family, Archivo, does all the lettering; its width axis carries role, condensed for the title and expanded for the labels. The site's identity is an oversized whisk, drawn to the owner's own whisk, that dips in from the top-right edge and crosses the header rule. It stands in for a wordmark (\"Cookbook\" remains only the manifest and document name).\n\nIt refuses the food-blog card and the bookish notebook alike. Light mode only: `data-theme=\"light\"` and `color-scheme: light` switch off Bulma's dark scheme, and dark mode is not designed. Bulma now supplies only its base reset; every visible component is drawn in `custom.css`.\n\nScope of evidence: the recipe page, the homepage catalog, and the shared header, breadcrumb and footer are designed. There are no category listing pages; a category is reached as a homepage tab.",
     "keyCharacteristics": [
       "One family, Archivo (self-hosted variable woff2, weight 100–900, width 62–125%), with width as a role signal.",
       "Two-color ink system: form blue for printed structure, highlighter for live state only.",
       "Amounts in a right-aligned bold tabular column; durations and oven temperatures bolded in running text.",
       "22px reading size for anything read mid-task; tap targets at least 44px.",
       "Ruled rows, square corners or 4px at most, no elevation.",
+      "Authored line glyphs (24px, 2.25 stroke, round caps) in Form Blue; no icon font or library.",
       "The whisk mark as identity, cropped by the page edge and cutting the header rule with a white halo.",
       "Instant state changes; no entrance motion."
     ],
@@ -320,7 +428,7 @@
       },
       {
         "name": "The Highlighter Is Live Rule",
-        "body": "Highlighter marks state that is currently on: the chosen scale, the held wake lock, selected text. The only resting use is the whisk's grip, which belongs to the identity mark. Nothing else gets highlighter at rest.",
+        "body": "Highlighter marks state that is currently on: the chosen scale, the selected catalog tab, the letters a search matched, the held wake lock, selected text. The only resting use is the whisk's grip, which belongs to the identity mark. Nothing else gets highlighter at rest.",
         "section": "colors"
       },
       {
@@ -335,7 +443,7 @@
       },
       {
         "name": "The Arm's-Length Rule",
-        "body": "Anything read mid-task is set at 22px or larger. Below that is reserved for labels, wayfinding and the footer hint.",
+        "body": "Anything read mid-task is set at 22px or larger. Below that is reserved for labels, wayfinding (tabs, counts, find input, status line) and the footer hint.",
         "section": "typography"
       },
       {
@@ -346,11 +454,13 @@
     ],
     "dos": [
       "**Do** draw every piece of form structure (rules, labels, numerals, bullets, links, focus) in Form Blue and the cook's content in Ink.",
-      "**Do** reserve Highlighter for live state: the chosen scale, the held wake lock, selected text.",
+      "**Do** reserve Highlighter for live state: the chosen scale, the selected tab, matched search letters, the held wake lock, selected text.",
       "**Do** set anything read mid-task at 22px or larger, with amounts, times and temperatures at 800.",
-      "**Do** keep tap targets at least 44px tall and state changes instant.",
+      "**Do** keep tap targets at least 44px tall and state changes instant; set `transition: none` on any new button, since Bulma fades buttons by default.",
       "**Do** separate rows and regions with 1px Form Rule lines and the 3px Form Blue header rule.",
-      "**Do** keep the whisk as the identity: cropped by the top-right edge, crossing the header rule with its Paper halo."
+      "**Do** keep the whisk as the identity: cropped by the top-right edge, crossing the header rule with its Paper halo.",
+      "**Do** draw new icons as 24px line glyphs with a 2.25 stroke and round caps, in `currentColor`.",
+      "**Do** move phones from the bottom tab bar to stacked full-width tabs once there are more than about four top-level categories."
     ],
     "donts": [
       "**Don't** add cards, shadows, raised panels, chips or pill-shaped buttons; the toggle switch is the only rounded form.",
@@ -359,7 +469,7 @@
       "**Don't** use Highlighter at rest outside the whisk grip, or as a text color on white.",
       "**Don't** add entrance or decorative motion.",
       "**Don't** design or preserve a dark mode; the site is light only.",
-      "**Don't** treat the current nav items or the home/category index lists as settled patterns."
+      "**Don't** add per-category listing pages or a nested link tree; categories are homepage tabs."
     ]
   }
 }

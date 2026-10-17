@@ -1,15 +1,71 @@
 ---
 layout: base.njk
-title: Home
-siteTitle: Recipes
+title: Cookbook
 ---
 
-{% from "nav-tree.njk" import renderNavTree %}
+{# One tab per top-level category. Without JS every panel shows, stacked, and
+   the tabs and find field stay hidden; initCatalog turns them on. #}
+{% set tabs = navigation | catalogTabs %}
 
-<div class="page">
-  <h1 class="page-title">{{ siteTitle }}</h1>
+<svg class="icon-sprite" aria-hidden="true" focusable="false">
+  <symbol id="icon-find" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5"/><path d="M15 15l5.5 5.5"/></symbol>
+  <symbol id="icon-clear" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="icon-go" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+</svg>
 
-  <nav class="toc">
-    {{ renderNavTree(navigation | categoriesOnly) }}
-  </nav>
+<div class="page catalog" id="catalog">
+  <h1 class="visually-hidden">Recipes</h1>
+
+  <div class="catalog-find" role="search" hidden>
+    <label class="visually-hidden" for="catalog-query">Find a recipe by name</label>
+    <svg class="glyph" aria-hidden="true"><use href="#icon-find"/></svg>
+    <input id="catalog-query" type="search" placeholder="Recipe name"
+           autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go">
+    <button type="button" class="catalog-clear" aria-label="Clear search" hidden>
+      <svg class="glyph" aria-hidden="true"><use href="#icon-clear"/></svg>
+    </button>
+  </div>
+
+  <div class="catalog-tabs" role="tablist" aria-label="Categories" hidden>
+    {% for tab in tabs %}
+      <button type="button" role="tab" id="tab-{{ tab.slug }}" aria-controls="panel-{{ tab.slug }}"
+              aria-selected="false" tabindex="-1" data-tab="{{ tab.slug }}">
+        <span class="catalog-tab-name">{{ tab.title }}</span>
+        <span class="catalog-tab-count">{{ tab.count }}<span class="visually-hidden"> recipes</span></span>
+      </button>
+    {% endfor %}
+  </div>
+
+  <p class="catalog-status" aria-live="polite"></p>
+
+  <div class="catalog-panels">
+    {% for tab in tabs %}
+      <section class="catalog-panel" id="panel-{{ tab.slug }}" aria-labelledby="title-{{ tab.slug }}" data-panel="{{ tab.slug }}">
+        <h2 class="catalog-title" id="title-{{ tab.slug }}">{{ tab.title }}</h2>
+        {% for group in tab.groups %}
+          <div class="catalog-group">
+            {% if group.title %}<h3 class="catalog-label">{{ group.title }}</h3>{% endif %}
+            <ul class="catalog-list">
+              {% for recipe in group.recipes %}
+                <li>
+                  <a href="{{ recipe.url | url }}">
+                    <span class="catalog-name">{{ recipe.title }}</span>
+                    <svg class="glyph" aria-hidden="true"><use href="#icon-go"/></svg>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endfor %}
+      </section>
+    {% endfor %}
+  </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.initCatalog) {
+      window.initCatalog();
+    }
+  });
+</script>

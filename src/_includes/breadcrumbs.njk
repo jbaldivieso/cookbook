@@ -1,11 +1,12 @@
-{# Parent categories only: the current page is already the heading below #}
+{# Parent categories only: the current page is already the heading below. The
+   top-level category links to its tab on the homepage; deeper ones are labels. #}
 {% set crumbs = page | buildBreadcrumbs(navigation) %}
 {% if crumbs.length > 1 %}
   <nav class="crumbs" aria-label="Breadcrumb">
     <ol>
       {% for crumb in crumbs %}
         {% if not crumb.isLast %}
-          <li><a href="{{ crumb.url | url }}">{{ crumb.title }}</a></li>
+          <li>{% if crumb.tab %}<a href="{{ '/' | url }}#{{ crumb.tab }}">{{ crumb.title }}</a>{% else %}{{ crumb.title }}{% endif %}</li>
         {% endif %}
       {% endfor %}
     </ol>
