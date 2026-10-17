@@ -1,321 +1,289 @@
 ---
 name: Cookbook
-description: A personal baker's notebook of recipes, set large in Crimson Pro for reading at the counter.
+description: A personal recipe notebook printed like a bakery production form; form blue for the printed structure, highlighter only for what is active.
 colors:
-  page: "#ffffff"
-  page-edge: "#f9fafb"
-  slate-wash: "#f3f4f6"
-  rule-gray: "#d6d9e0"
-  slate-ink: "#404654"
-  deep-slate: "#2e333d"
-  faded-ink: "#69748c"
-  ink-indigo: "#2942ff"
-  indigo-bright: "#4258ff"
-  chrome-indigo: "#485fc7"
-  weight-crimson: "#cc0029"
-  proof-green: "#48c78e"
-  proof-green-ink: "#0c271b"
-  nudge-amber: "#ffb70f"
-  nudge-amber-ink: "#332400"
+  ink: "#16181d"
+  ink-soft: "#5b6170"
+  ink-done: "#a3a8b3"
+  form: "#2f5fae"
+  form-rule: "#c9d6ec"
+  highlighter: "#e4f53a"
+  paper: "#ffffff"
 typography:
-  headline:
-    fontFamily: "Crimson Pro, serif"
-    fontSize: "2rem"
+  display:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "3.375rem"
     fontWeight: 800
-    lineHeight: 1.125
-  title:
-    fontFamily: "Crimson Pro, serif"
-    fontSize: "1.75rem"
+    lineHeight: 1.02
+    letterSpacing: "-0.015em"
+    fontVariation: "'wdth' 90"
+  display-compact:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "2.625rem"
     fontWeight: 800
-    lineHeight: 1.125
-  index:
-    fontFamily: "Crimson Pro, serif"
-    fontSize: "2rem"
-    fontWeight: 400
-    lineHeight: 1.5
-  body:
-    fontFamily: "Crimson Pro, serif"
-    fontSize: "1.5rem"
-    fontWeight: 400
-    lineHeight: 1.5
-  label:
-    fontFamily: "Crimson Pro, serif"
-    fontSize: "1.25rem"
+    lineHeight: 1.02
+    letterSpacing: "-0.015em"
+    fontVariation: "'wdth' 90"
+  section-label:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "0.875rem"
     fontWeight: 700
-    lineHeight: 1.5
+    lineHeight: 1
+    letterSpacing: "0.16em"
+    fontVariation: "'wdth' 125"
+  crumb:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "0.9375rem"
+    fontWeight: 600
+    lineHeight: 1.3
+    letterSpacing: "0.12em"
+    fontVariation: "'wdth' 125"
+  subhead:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "1.0625rem"
+    fontWeight: 700
+    fontVariation: "'wdth' 112"
+  body:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "1.375rem"
+    fontWeight: 400
+    lineHeight: 1.45
+  amount:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "1.14em"
+    fontWeight: 800
+    fontFeature: "tnum"
+  figure:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "1em"
+    fontWeight: 800
+  control:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "1.1875rem"
+    fontWeight: 600
+  note:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "1.125rem"
+    fontWeight: 400
   small:
-    fontFamily: "Crimson Pro, serif"
+    fontFamily: "Archivo, system-ui, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
-    lineHeight: 1.5
-  quantity:
-    fontFamily: "Inconsolata, Hack, SF Mono, Roboto Mono, Source Code Pro, Ubuntu Mono, monospace"
-    fontSize: "0.875em"
-    fontWeight: 600
 rounded:
-  sm: "0.25rem"
-  md: "0.375rem"
-  pill: "0.5em"
+  control: "4px"
+  switch: "15px"
+  knob: "50%"
 spacing:
-  block: "1.5rem"
-  section-y: "3rem"
-  section-x: "1.5rem"
-  section-x-desktop: "3rem"
+  page-max: "1120px"
+  gutter: "40px"
+  gutter-phone: "18px"
+  column-gap: "56px"
+  column-gap-stacked: "36px"
+  section-gap: "36px"
+  row-y: "11px"
+  amount-column: "4.6rem"
+  amount-gap: "14px"
+  step-indent: "34px"
+  tap-min: "44px"
 components:
-  scale-toggle:
-    backgroundColor: "{colors.page}"
-    textColor: "{colors.slate-ink}"
-    rounded: "{rounded.md}"
-    padding: "0.5em 1em"
-    typography: "{typography.small}"
-  scale-toggle-active:
-    backgroundColor: "{colors.indigo-bright}"
-    textColor: "{colors.page}"
-    rounded: "{rounded.md}"
-    padding: "0.5em 1em"
-  quantity-pill:
-    backgroundColor: "{colors.slate-wash}"
-    textColor: "{colors.weight-crimson}"
-    rounded: "{rounded.pill}"
-    padding: "0.25em 0.5em"
-    typography: "{typography.quantity}"
-  wake-lock-badge-active:
-    backgroundColor: "{colors.proof-green}"
-    textColor: "{colors.proof-green-ink}"
-    rounded: "{rounded.sm}"
-    height: "2.5em"
-  wake-lock-badge-idle:
-    backgroundColor: "{colors.nudge-amber}"
-    textColor: "{colors.nudge-amber-ink}"
-    rounded: "{rounded.sm}"
-    height: "2.5em"
-  navbar:
-    backgroundColor: "{colors.page-edge}"
-    textColor: "{colors.slate-ink}"
-    typography: "{typography.label}"
-    height: "3.25rem"
-  footer:
-    backgroundColor: "{colors.page-edge}"
-    textColor: "{colors.slate-ink}"
-    padding: "3rem 1.5rem 6rem"
-    typography: "{typography.small}"
+  header-bar:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.ink}"
+    typography: "{typography.control}"
+    height: "72px"
+  scale-button:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.form}"
+    rounded: "{rounded.control}"
+    padding: "0 12px"
+    width: "48px"
+    height: "44px"
+  scale-button-active:
+    backgroundColor: "{colors.highlighter}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.control}"
+    padding: "0 12px"
+    width: "48px"
+    height: "44px"
+  wake-switch-track:
+    backgroundColor: "{colors.paper}"
+    rounded: "{rounded.switch}"
+    width: "52px"
+    height: "30px"
+  wake-switch-track-on:
+    backgroundColor: "{colors.form}"
+    rounded: "{rounded.switch}"
+    width: "52px"
+    height: "30px"
+  wake-switch-knob-on:
+    backgroundColor: "{colors.highlighter}"
+    rounded: "{rounded.knob}"
+    size: "20px"
+  section-label:
+    textColor: "{colors.form}"
+    typography: "{typography.section-label}"
+    height: "44px"
+  ingredient-row:
+    textColor: "{colors.ink}"
+    typography: "{typography.body}"
+    padding: "11px 0"
+  ingredient-row-done:
+    textColor: "{colors.ink-done}"
+    typography: "{typography.body}"
+    padding: "11px 0"
+  breadcrumb:
+    textColor: "{colors.form}"
+    typography: "{typography.crumb}"
 ---
 
 # Design System: Cookbook
 
 ## Overview
 
-**Creative North Star: "The Baker's Notebook"**
+**Creative North Star: "Form Ink"**
 
-Cookbook is someone's own notebook of ratios they worked hard to get right, not a published
-cookbook. It is set in a bookish serif (Crimson Pro) at sizes meant for a page propped
-against the backsplash. Body text is half again as large as normal, and the category index
-is twice normal size. The notes are terse and the layout is a single plain column: a title,
-a few short sections, and the weights picked out in a small monospace pill so the eye finds
-the number first.
+The standard modern recipe page (title, ingredients on the left, numbered timing on the right, one scale switch, one screen-on switch), printed like a bakery production form. The ground is white bond and the ink is near-black. Everything that is *printed structure* (the header rule, the wide-tracked capital labels, the step numerals, the breadcrumb, links, focus rings) is in one form blue. Everything that is *active right now* (the chosen scale, the switch knob when the screen is being held on, selected text) is marked in highlighter. The cook's own words sit on the form at counter-reading size, with the amounts set heaviest so the eye finds the number first.
 
-Most of what isn't type comes straight from Bulma 1.0's stock theme: cool slate neutrals,
-indigo links and a crimson code color. **These colors are inherited, not chosen.** They are
-recorded here so new work matches what ships today, but they aren't commitments. A future
-pass may replace any of them as long as it keeps the notebook character. The deliberate
-choices are the typeface, the large reading scale, the monospace quantity pill, and controls
-that feel touchable.
+The world is ruled, not raised. Rows are divided by thin pale-blue rules, the header by a 3px form-blue rule, and there are no cards, chips, shadows or photographs. A single variable family, Archivo, does all the lettering; its width axis carries role, condensed for the title and expanded for the labels. The site's identity is an oversized whisk, drawn to the owner's own whisk, that dips in from the top-right edge and crosses the header rule. It stands in for a wordmark ("Cookbook" remains only the manifest and document name).
 
-The notebook stays away from three nearby looks: the glossy food blog or magazine (hero
-photos, card grids, lifestyle imagery), generic app or SaaS UI (sans-serif dashboards, pill
-buttons, gradients, shadows everywhere), and faux-rustic kitsch (chalkboard, gingham, script
-fonts, wood grain).
+It refuses the food-blog card and the bookish notebook alike. Light mode only: `data-theme="light"` and `color-scheme: light` switch off Bulma's dark scheme, and dark mode is not designed.
 
-The site is designed for light mode only. Bulma currently switches to a dark palette when
-the device asks for it, but that is a side effect nobody designed or tested. Future work
-doesn't need to keep it working and may turn it off.
+Scope of evidence: the recipe page and the shared header and footer are designed. The home and category pages inherit the header, type and colors but have not been designed yet; their current index-list styling is a placeholder, not a pattern. The header nav items are provisional, pending a separate navigation redesign.
 
 **Key Characteristics:**
-- One serif voice, Crimson Pro, for everything except the quantities.
-- Oversized reading scale: 24px body text and a 32px category index, readable from a step back.
-- Weights stand out as monospace pills; when a weight can be scaled, its pill is semibold.
-- Flat, white pages with no imagery, no cards and no decorative depth.
-- Controls that feel tactile and friendly: obviously tappable, with a clear state change.
-- Colors are Bulma 1.0's stock theme and are marked as inherited.
+- One family, Archivo (self-hosted variable woff2, weight 100–900, width 62–125%), with width as a role signal.
+- Two-color ink system: form blue for printed structure, highlighter for live state only.
+- Amounts in a right-aligned bold tabular column; durations and oven temperatures bolded in running text.
+- 22px reading size for anything read mid-task; tap targets at least 44px.
+- Ruled rows, square corners or 4px at most, no elevation.
+- The whisk mark as identity, cropped by the page edge and cutting the header rule with a white halo.
+- Instant state changes; no entrance motion.
 
 ## Colors
 
-The palette is a cool, slate-tinted neutral ramp with two inherited accents: indigo for
-anything you can tap and crimson for quantities. All of it is Bulma 1.0's stock theme.
+A two-ink print palette on white: one structural blue and one fluorescent marker, over a cool near-black text ramp.
 
 ### Primary
-- **Ink Indigo** (`ink-indigo`): The color of link text, including breadcrumbs and
-  category/recipe links in the index. *Inherited* (Bulma link-on-scheme).
-- **Bright Indigo** (`indigo-bright`): The fill behind the active 1x/2x/3x scale tab and the
-  mobile burger icon. *Inherited* (Bulma link base).
-- **Chrome Indigo** (`chrome-indigo`): Used only for the browser and PWA chrome, through
-  `<meta name="theme-color">` and the manifest's `theme_color`. It is the Bulma 0.9 link
-  color and has drifted from the in-page indigo. *Inherited / legacy.*
+- **Form Blue** (`form`): the printed structure of the form. The 3px header rule, section labels, breadcrumbs, step numerals, square list bullets, link text, the scale buttons' numerals, the switch track outline and its "on" fill, the whisk wires and ferrule, and the 3px focus outline.
 
 ### Secondary
-- **Weight Crimson** (`weight-crimson`): The text color of every inline-code quantity, so
-  `200g` reads as a figure written in the margin. *Inherited* (Bulma code color), but it is
-  now the main way the eye finds the numbers. Keep a distinct color for quantities even if
-  this hue changes.
-
-### Tertiary
-- **Proof Green** (`proof-green`): The wake-lock badge when the screen is staying on, with
-  text in its own darkest tint (`proof-green-ink`). *Inherited* (Bulma success).
-- **Nudge Amber** (`nudge-amber`): The wake-lock badge when it's asking for a tap to keep
-  the screen on, with text in `nudge-amber-ink`. *Inherited* (Bulma warning).
+- **Highlighter** (`highlighter`): marks only what is live. The selected scale button's fill, the switch knob while the screen is held on, and `::selection`. Always carries Ink text or sits on Form Blue; never used as text color on white (1.2:1).
 
 ### Neutral
-- **Page** (`page`): The page background.
-- **Page Edge** (`page-edge`): The navbar and footer bands, a barely visible tint that marks
-  where the page begins and ends.
-- **Slate Wash** (`slate-wash`): The background of the quantity pill, and the hairline under
-  the navbar.
-- **Rule Gray** (`rule-gray`): Borders on the scale toggle and the breadcrumb separators.
-- **Slate Ink** (`slate-ink`): Body text and navbar items.
-- **Deep Slate** (`deep-slate`): Headings: the recipe title and section h2s.
-- **Faded Ink** (`faded-ink`): Weak or secondary text where Bulma uses it. It is rarely
-  visible today.
+- **Ink** (`ink`): body text, the title, amounts, nav items, and the border of the selected scale button.
+- **Soft Ink** (`ink-soft`): secondary text. The Source note, category descriptions, the footer hint, the disabled switch label.
+- **Done Ink** (`ink-done`): crossed-off lines (always paired with a 2px line-through) and the disabled switch track and knob. A deliberate low-contrast state for finished items, not a text color.
+- **Form Rule** (`form-rule`): 1px row rules between ingredient lines, under the title row and above the footer; the resting border of the scale buttons; the nesting rule in index lists.
+- **Paper** (`paper`): the page, the header, button grounds, and the whisk's halo.
 
 ### Named Rules
-**The Inherited Palette Rule.** Every color above came from Bulma. Matching them is correct
-by default, but no color is sacred. Changing the palette is a design decision to make
-deliberately, not drift to avoid at any cost.
+**The Printed Structure Rule.** If it is part of the form (rule, label, numeral, bullet, link, focus ring), it is Form Blue. Text the cook wrote is Ink.
 
-**The Quantities Stand Apart Rule.** Quantities always get a color and typeface different
-from the surrounding text. Changing the crimson is allowed; making weights look like
-ordinary text is not.
+**The Highlighter Is Live Rule.** Highlighter marks state that is currently on: the chosen scale, the held wake lock, selected text. The only resting use is the whisk's grip, which belongs to the identity mark. Nothing else gets highlighter at rest.
 
 ## Typography
 
-**Body Font:** Crimson Pro (with `serif`), loaded from Google Fonts across its full weight
-range (200–900) with italics.
-**Quantity Font:** Bulma's code stack, `Inconsolata, Hack, SF Mono, …, monospace`.
-Inconsolata isn't loaded, so Apple devices show SF Mono.
+**Display Font:** Archivo at 90% width (with `system-ui, sans-serif`)
+**Body Font:** Archivo at normal width
+**Label Font:** Archivo at 125% width, uppercase, wide tracking
 
-**Character:** a literary serif doing every job, from the 800-weight headings down to the
-16px footer note. Against it, the small monospace quantities read like figures written in
-the margin of a notebook.
+**Character:** A single grotesque that changes width the way a printed form changes typesetting: tight and heavy for the job title, wide and spaced for the pre-printed field labels, plain for the handwritten-in content. Self-hosted and precached so it holds offline.
 
 ### Hierarchy
-- **Headline** (800, 2rem / 32px, 1.125): The recipe or category title, one per page.
-- **Title** (800, 1.75rem / 28px, 1.125): Section h2s in a recipe (Ingredients, Timing,
-  Source).
-- **Index** (400, 2rem / 32px, 1.5): The nested category and recipe lists on the homepage and
-  category pages. Category names in the list are bold.
-- **Body** (400, 1.5rem / 24px, 1.5): Recipe list items and paragraphs. This is the reading
-  size at the counter.
-- **Label** (700, 1.25rem / 20px): Navbar items and the "Cookbook" wordmark.
-- **Small** (400, 1rem / 16px): Breadcrumbs, the footer hint, the scale toggle and
-  subtitles.
-- **Quantity** (600 when scalable, 0.875em of its context, so about 21px in a list item):
-  Inline gram weights.
+- **Display** (800, 3.375rem / 54px, 1.02, -0.015em, 90% width; 2.625rem / 42px at 768px and below): the recipe or category title, one per page, balanced wrapping.
+- **Section label** (700, 0.875rem / 14px, 0.16em tracking, 125% width, uppercase, Form Blue): the h2s, Ingredients, Timing, Source. These are the real section headings, not decorative kickers.
+- **Crumb** (600, 0.9375rem / 15px, 0.12em, 125% width, uppercase, Form Blue): the parent-category trail above the title, separated by `/`. The current page is omitted because the title follows.
+- **Subhead** (700, 1.0625rem / 17px, 112% width): h3s inside a recipe body.
+- **Body** (400, 1.375rem / 22px, 1.45 for paragraphs, 1.4 for list items, 1.3 in ingredient rows; 65ch max for paragraphs): every ingredient, step and note.
+- **Amount** (800, 1.14em of body, tabular figures): the gram weight in the amount column; its `g` unit drops to 0.72em at 700. Other inline code in a recipe is 700 tabular at body size.
+- **Figure** (800, inherits body size): durations and oven temperatures, bolded automatically in non-ingredient sections.
+- **Control** (600, 1.1875rem / 19px): nav items; the wake switch label is 600 at 1.125rem; scale button numerals are 800 at 1.1875rem.
+- **Note** (400, 1.125rem / 18px, Soft Ink): the Source section.
+- **Small** (400, 1rem / 16px, Soft Ink): the footer hint.
 
 ### Named Rules
-**The Arm's-Length Rule.** Anything a cook needs to read mid-task (ingredients, timings,
-temperatures) is set at the 24px body size or larger. The 16px Small size is only for
-wayfinding and hints.
+**The One Family Rule.** Archivo is the only face. Role is carried by width, weight and case, not by a second family or a monospace.
 
-**The One Serif Rule.** Crimson Pro is the only text face. Monospace is reserved for
-quantities.
+**The Amount First Rule.** Amounts, times and temperatures are the heaviest marks in their line (800). The cook should find the number before the word.
+
+**The Arm's-Length Rule.** Anything read mid-task is set at 22px or larger. Below that is reserved for labels, wayfinding and the footer hint.
 
 ## Layout
 
-A single centered column inside Bulma's `.section > .container`. Sections are padded 3rem
-top and bottom, with 1.5rem sides on phones and 3rem from 1024px up. The container fills the
-viewport below 1024px and is capped at 960 / 1152 / 1344px at Bulma's desktop, widescreen
-and fullhd breakpoints (1024 / 1216 / 1408px). Because there's no measure cap, lines can run
-long on a wide tablet in landscape.
+A centered page of 1120px max (`page-max`) with 40px gutters, 18px at 768px and below. The header rule runs full-bleed; header content aligns to the same page edge.
 
-Recipe pages are, in order: breadcrumbs, title, and then the Markdown sections (Ingredients,
-Timing, Source), each opened by an h2. The scale toggle sits directly above each Ingredients
-heading. Lists use disc bullets indented 2em, and the index lists nest with the category
-tree. There's no grid, sidebar or multi-column layout. Below 1024px the navbar collapses
-into a burger menu whose category dropdowns open on tap.
+Recipe page, top to bottom: header; breadcrumb; a title row with the title left and the Keep-screen-on switch right, bottom-aligned, closed by a 1px Form Rule; then two columns, Ingredients (up to 400px) and everything else (Timing, other sections, Source) at 56px apart. A recipe without an ingredients section uses one 760px column. At 899px and below the columns stack with 36px between them; at 768px and below the title row stacks too (switch below the title, full width) and loses its rule.
+
+Sections are 36px apart. Each opens with a 44px label row; in Ingredients the scale control sits at the right end of that row. Ingredient rows are a two-column grid: a 4.6rem right-aligned amount column, 14px gap, then the item; lines without an amount indent to the item column so text aligns. Step lists hang their numerals 34px out. The footer shares the page width, separated by a 1px Form Rule.
 
 ## Elevation & Depth
 
-Flat. Pages are white sheets with tinted bands at top and bottom (Page Edge). The only edges
-are a 0.125em Slate Wash line under the navbar and the 1px borders on the scale toggle.
-Bulma's own soft drop shadow appears under the desktop category dropdown, and that's the
-only shadow on the site.
+Flat. There are no shadows anywhere in the designed surfaces. Separation comes from rules (3px Form Blue under the header, 1px Form Rule between rows and around the title row) and from type weight. The one overlap is the whisk, which sits over the header rule and title row; it reads as printed over the form, not lifted above it, because a 7px Paper halo cuts a gap in whatever it crosses.
 
-**The Flat Page Rule.** Nothing rises off the page. Don't add cards, raised panels or
-decorative shadows. Show hierarchy with type size and weight.
+### Named Rules
+**The Ruled, Not Raised Rule.** Structure is drawn with lines. No cards, panels, raised surfaces or drop shadows.
 
 ## Shapes
 
-Gently softened rectangles. The scale toggle and badge use Bulma's small radii (0.25rem and
-0.375rem, with the toggle rounded only at its outer ends). The quantity pill is the roundest
-shape on the page (0.5em), which gives each weight a small lozenge. There are no circles, no
-fully rounded pill buttons and no ornament. Shapes stay quiet so the type carries the page.
+Square by default. Buttons take a 4px corner (`rounded.control`); rows, rules and the 6px square list bullets have none. The wake switch is the one fully rounded form: a 52 × 30px track (15px radius) with a 20px round knob, because that is the native shape of a toggle switch. The whisk is the only organic silhouette.
 
 ## Components
 
-### Scale Toggle (signature)
-*Tactile and friendly: a row of three segmented tabs, so it's obvious which one is
-selected.*
-- **Structure:** Bulma `tabs is-toggle`. Three joined segments, `1x` `2x` `3x`, in a
-  Rule Gray 1px outline, rounded at the outer ends (0.375rem).
-- **Default:** white with Slate Ink text at the Small size, padded 0.5em 1em.
-- **Active:** filled with Bright Indigo and white text.
-- **Behavior:** tapping a segment rescales every weight pill in that Ingredients section,
-  and the choice is remembered per recipe.
+### Scale Control (signature)
+*Three printed boxes; the chosen one is highlighted.*
+- **Structure:** a 6px-gapped row of three separate buttons, `1×` `2×` `3×`, each at least 48 × 44px, in the Ingredients label row.
+- **Default:** Paper ground, 1.5px Form Rule border, 4px corners, Form Blue numerals at 800.
+- **Hover:** border darkens to Form Blue.
+- **Selected:** Highlighter fill, Ink border and numerals. The change is instant.
+- **Behavior:** rescales every whole-gram amount in that section and is remembered per recipe. Only the chosen scale's amounts are ever shown; there are no unused scale columns and no computed totals.
 
-### Quantity Pill (signature)
-- **Style:** the monospace stack at 0.875em, Weight Crimson on Slate Wash, padded
-  0.25em 0.5em, with a 0.5em radius.
-- **Scalable:** semibold (600). Only whole-gram weights scale. Other inline code keeps the
-  same pill at normal weight.
+### Keep-Screen-On Switch
+*One visible switch that tells the truth.*
+- **Structure:** a `role="switch"` button, label then track, at least 44px tall; hidden until the script runs so it never appears dead.
+- **Off:** Paper track with a 2px Form Blue outline, Form Blue knob at the left.
+- **On:** Form Blue track, Highlighter knob slid 22px right. Reads "on" only while a wake lock is actually held.
+- **Unsupported:** disabled, label "Screen may sleep" in Soft Ink, track and knob in Done Ink.
+- **Motion:** knob and fill transition at 150ms ease-out, the only transition in the system.
 
-### Crossed-Off Line
-*The notebook's tick-mark.* Tapping any ingredient or step line toggles a line-through and
-drops it to 60% opacity. A pointer cursor and `user-select: none` make it feel like a
-control, not text. The footer explains it in one line: "Tap ingredient lines or recipe
-steps to cross them out."
+### Ingredient Row
+- **Style:** Body text, 11px vertical padding, 1px Form Rule below each line. Amount column right-aligned, 800 tabular, unit reduced.
+- **Crossed off:** tapping any ingredient or step toggles Done Ink plus a 2px line-through. Pointer cursor and no text selection make the line read as a control.
 
-### Wake-Lock Badge
-- **Style:** a small Bulma button (`is-small`, 0.25rem radius) in the recipe-page footer.
-- **States:** Proof Green "Screen staying on". Nudge Amber "Tap to keep screen on" (idle or
-  denied; tapping it asks for the lock again). Light gray "Screen may sleep" when the
-  browser doesn't support wake lock.
+### Step List
+- **Style:** numbered sequence for Timing, Method, Steps, Instructions or Directions sections. Form Blue numerals at 800 tabular, hung 34px; 15px between steps. Durations and temperatures bolded. Crossed-off steps grey their numeral too.
+- **Other lists:** non-sequence, non-ingredient sections use a 6px square Form Blue bullet.
 
-### Navigation
-- **Navbar:** a Page Edge band 3.25rem tall, bold at the 20px Label size, with the "Cookbook"
-  wordmark plus one dropdown per top-level category. Each dropdown lists that category's
-  children and ends with a "View all …" link. On desktop the dropdowns open on hover; on
-  mobile they open with a tap inside the burger menu.
-- **Breadcrumbs:** Small size, Ink Indigo links with Rule Gray `/` separators. The current
-  page is shown but isn't a link.
-- **Index lists:** 32px disc lists that mirror the category tree. Categories are bold and
-  recipes are regular weight.
+### Whisk Mark (signature identity)
+*The owner's whisk, dipping into the page.*
+- **Drawing:** two nested balloon loops and a center wire, drawn to the owner's real whisk proportions (about 9.5" overall with a 3.5" handle, the wires tapering slowly and widening near the tip). Form Blue wires (2.5 stroke, round caps), Form Blue ferrule, Highlighter grip outlined in Form Blue. Rotated 220°, head down.
+- **Placement:** 240px square, top −61px, right edge 108px beyond the page edge, so it is cropped by the top and right of the viewport and crosses the header rule over the title row's switch. At 768px and below, 180px at −52px / −34px.
+- **Halo:** a Paper copy drawn underneath at stroke 7 cuts a gap wherever the whisk crosses the rule.
+- **Behavior:** it is the home link (labelled "Cookbook home"); only painted strokes take pointer events; hidden while the mobile menu is open. No entrance or hover animation.
+- **Favicon:** the same whisk at 140°, Form Blue with Highlighter grip, on a 48 viewBox.
 
-### Footer
-A Page Edge band (3rem 1.5rem 6rem padding) holding the tap-to-cross-off hint and, on recipe
-pages, the wake-lock badge, stacked with a 0.75rem gap.
+### Navigation (provisional)
+- **Header bar:** 72px Paper bar, items in Control type (600, 19px, Ink), hover to Form Blue with no background; dropdown chevrons in Form Blue; 3px Form Blue bottom rule. Below Bulma's desktop breakpoint, a burger at the left.
+- **Status:** the item set (Home plus one dropdown per top-level category) and the dropdown behavior are provisional and will be redesigned separately. Only the bar, its rule and the item type are part of the system.
+- **Breadcrumb:** see Crumb type; links in Form Blue, underline on hover.
+
+### Index Lists (placeholder)
+Home and category pages currently show nested 24px Ink link lists with a 2px Form Rule nesting line. These pages have not been designed in this world; do not treat the list as a reusable pattern.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** set every new text element in Crimson Pro, at 24px (Body) or larger if a cook
-  reads it mid-task.
-- **Do** write gram weights as inline code so they render as quantity pills and can scale.
-- **Do** make interactive elements look obviously tappable and change state clearly
-  (filled versus outlined, struck through versus not), in line with the tactile, friendly
-  control style.
-- **Do** keep pages flat and in a single column. Show hierarchy with type size and weight.
-- **Do** treat the Bulma colors as the current default. A deliberate palette change is
-  allowed; keep quantities in their own color either way.
-- **Do** keep `chrome-indigo` (theme-color and manifest) in mind whenever the in-page
-  palette changes. They have already drifted apart.
+- **Do** draw every piece of form structure (rules, labels, numerals, bullets, links, focus) in Form Blue and the cook's content in Ink.
+- **Do** reserve Highlighter for live state: the chosen scale, the held wake lock, selected text.
+- **Do** set anything read mid-task at 22px or larger, with amounts, times and temperatures at 800.
+- **Do** keep tap targets at least 44px tall and state changes instant.
+- **Do** separate rows and regions with 1px Form Rule lines and the 3px Form Blue header rule.
+- **Do** keep the whisk as the identity: cropped by the top-right edge, crossing the header rule with its Paper halo.
 
 ### Don't:
-- **Don't** drift toward a glossy food blog or magazine: no hero photos, card grids or
-  lifestyle imagery.
-- **Don't** drift toward generic app or SaaS UI: no sans-serif dashboards, pill buttons,
-  gradients or shadows everywhere.
-- **Don't** drift toward faux-rustic kitsch: no chalkboard textures, gingham, handwritten
-  script fonts or wood grain.
-- **Don't** add a second text typeface. Monospace is only for quantities.
-- **Don't** add raised cards or decorative shadows. Bulma's dropdown shadow is the only one.
-- **Don't** spend effort designing or preserving dark mode. The site is designed for light
-  mode only.
+- **Don't** add cards, shadows, raised panels, chips or pill-shaped buttons; the toggle switch is the only rounded form.
+- **Don't** introduce a second typeface or a monospace for amounts; use Archivo's tabular figures.
+- **Don't** show amounts for scales other than the chosen one, or computed totals.
+- **Don't** use Highlighter at rest outside the whisk grip, or as a text color on white.
+- **Don't** add entrance or decorative motion.
+- **Don't** design or preserve a dark mode; the site is light only.
+- **Don't** treat the current nav items or the home/category index lists as settled patterns.

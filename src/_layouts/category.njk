@@ -3,30 +3,16 @@ layout: base.njk
 ---
 {% from "nav-tree.njk" import renderNavTree %}
 
-<section class="section">
-  <div class="container">
-    {# Breadcrumbs #}
-    <nav class="breadcrumb" aria-label="breadcrumbs">
-      <ul>
-        <li><a href="{{ '/' | url }}">Home</a></li>
-        {% for crumb in page | buildBreadcrumbs %}
-          {% if crumb.isLast %}
-            <li class="is-active"><a href="{{ crumb.url | url }}" aria-current="page">{{ crumb.title | titleCase }}</a></li>
-          {% else %}
-            <li><a href="{{ crumb.url | url }}">{{ crumb.title | titleCase }}</a></li>
-          {% endif %}
-        {% endfor %}
-      </ul>
-    </nav>
+<div class="page">
+  {% include "breadcrumbs.njk" %}
 
-    <h1 class="title">{{ title }}</h1>
-    {% if description %}
-      <p class="subtitle">{{ description }}</p>
-    {% endif %}
+  <h1 class="page-title">{{ title }}</h1>
+  {% if description %}
+    <p class="page-description">{{ description }}</p>
+  {% endif %}
 
-    <nav class="toc">
-      {% set children = navigation | getChildren(page.url) %}
-      {{ renderNavTree(children) }}
-    </nav>
-  </div>
-</section>
+  <nav class="toc">
+    {% set children = navigation | getChildren(page.url) %}
+    {{ renderNavTree(children) }}
+  </nav>
+</div>

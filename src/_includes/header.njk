@@ -1,42 +1,60 @@
-<nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a class="navbar-item" href="{{ '/' | url }}">
-      Cookbook
-    </a>
+<header class="site-header">
+  {# The whisk is the site mark and the home link. It dips in from the top-right,
+     crossing the header rule; the white copy underneath cuts a gap in the rule. #}
+  <a class="whisk-mark" href="{{ '/' | url }}" aria-label="Cookbook home">
+    <svg viewBox="-40 -40 80 80" aria-hidden="true" focusable="false">
+      <defs>
+        <g id="whisk-shape">
+          <path class="whisk-wire" d="M2.6 37C3.6 30 9.6 17 9.6 8.5C9.6 3.2 5.4 0 0 0C-5.4 0 -9.6 3.2 -9.6 8.5C-9.6 17 -3.6 30 -2.6 37"/>
+          <path class="whisk-wire" d="M1.4 37C2.2 30 5.4 17 5.4 8.5C5.4 3.5 3.2 0 0 0C-3.2 0 -5.4 3.5 -5.4 8.5C-5.4 17 -2.2 30 -1.4 37"/>
+          <path class="whisk-wire" d="M0 37V0"/>
+          <rect class="whisk-ferrule" x="-3.4" y="35.5" width="6.8" height="4.5" rx="1.2"/>
+          <path class="whisk-grip" d="M-2.7 40.6L-3.3 57.2Q-3.3 60.3 0 60.3Q3.3 60.3 3.3 57.2L2.7 40.6Z"/>
+        </g>
+      </defs>
+      <g transform="rotate(220) translate(0 -30)">
+        <use href="#whisk-shape" class="whisk-halo"/>
+        <use href="#whisk-shape"/>
+      </g>
+    </svg>
+  </a>
 
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
-
-  <div id="navMenu" class="navbar-menu">
-    <div class="navbar-start">
-      <a class="navbar-item" href="{{ '/' | url }}">Home</a>
-
-      {# Dynamic category dropdowns #}
-      {% for category in navigation %}
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link" href="{{ category.url | url }}">
-            {{ category.title }}
-          </a>
-          <div class="navbar-dropdown">
-            {% for child in category.children %}
-              <a class="navbar-item" href="{{ child.url | url }}">
-                {{ child.title }}
-              </a>
-            {% endfor %}
-            {% if category.children.length %}
-              <hr class="navbar-divider">
-            {% endif %}
-            <a class="navbar-item" href="{{ category.url | url }}">
-              View all {{ category.title }}
-            </a>
-          </div>
-        </div>
-      {% endfor %}
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
     </div>
-  </div>
-</nav>
+
+    <div id="navMenu" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="{{ '/' | url }}">Home</a>
+
+        {# Dynamic category dropdowns #}
+        {% for category in navigation %}
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link" href="{{ category.url | url }}">
+              {{ category.title }}
+            </a>
+            <div class="navbar-dropdown">
+              {% for child in category.children %}
+                <a class="navbar-item" href="{{ child.url | url }}">
+                  {{ child.title }}
+                </a>
+              {% endfor %}
+              {% if category.children.length %}
+                <hr class="navbar-divider">
+              {% endif %}
+              <a class="navbar-item" href="{{ category.url | url }}">
+                View all {{ category.title }}
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </nav>
+</header>

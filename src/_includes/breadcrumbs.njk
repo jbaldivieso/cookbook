@@ -1,0 +1,13 @@
+{# Parent categories only: the current page is already the heading below #}
+{% set crumbs = page | buildBreadcrumbs(navigation) %}
+{% if crumbs.length > 1 %}
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <ol>
+      {% for crumb in crumbs %}
+        {% if not crumb.isLast %}
+          <li><a href="{{ crumb.url | url }}">{{ crumb.title }}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ol>
+  </nav>
+{% endif %}

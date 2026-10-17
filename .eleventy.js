@@ -5,15 +5,26 @@ export default function(eleventyConfig) {
   // Configure markdown-it with anchor plugin
   const md = markdownIt({
     html: true,
-    linkify: true
+    linkify: true,
+    typographer: true
   }).use(markdownItAnchor);
 
   eleventyConfig.setLibrary("md", md);
 
-  // Add breadcrumb filter
-  eleventyConfig.addFilter("buildBreadcrumbs", function(page) {
+  // Add breadcrumb filter. Titles come from the navigation tree (category JSON
+  // titles and recipe front matter), falling back to the directory name.
+  eleventyConfig.addFilter("buildBreadcrumbs", function(page, navigation = []) {
     const url = page.url;
     if (!url.startsWith('/recipes/')) return [];
+
+    function findTitle(items, itemUrl) {
+      for (const item of items) {
+        if (item.url === itemUrl) return item.title;
+        const found = findTitle(item.children || [], itemUrl);
+        if (found) return found;
+      }
+      return null;
+    }
 
     const segments = url.split('/').filter(Boolean).slice(1); // Remove 'recipes' prefix
     const breadcrumbs = [];
@@ -21,9 +32,11 @@ export default function(eleventyConfig) {
 
     for (let i = 0; i < segments.length; i++) {
       currentPath += '/' + segments[i];
+      const crumbUrl = currentPath + '/';
+      const fallback = segments[i].replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
       breadcrumbs.push({
-        title: segments[i].replace(/-/g, ' '),
-        url: currentPath + '/',
+        title: findTitle(navigation, crumbUrl) || fallback,
+        url: crumbUrl,
         isLast: i === segments.length - 1
       });
     }
@@ -65,47 +78,84 @@ export default function(eleventyConfig) {
     return filterCategories(items);
   });
 
-  // Transform to inject scaling tabs before ingredient sections
-  eleventyConfig.addTransform("injectScalingTabs", function(content, outputPath) {
-    // Only process HTML files in /recipes/
-    if (!outputPath || !outputPath.endsWith('.html') || !outputPath.includes('/recipes/')) {
-      return content;
+  // Group a recipe's rendered Markdown into one <section> per h2. Ingredient
+  // sections go in the primary column, everything else in the secondary one.
+  // Ingredient sections with scalable weights get a 1x/2x/3x control beside
+  // their heading; other sections get times and temperatures set in bold.
+  eleventyConfig.addFilter("recipeSections", function(html) {
+    const chunks = html.split(/(?=<h2[\s>])/);
+    const preamble = chunks[0].startsWith('<h2') ? '' : chunks.shift();
+    const primary = [];
+    const secondary = [];
+
+    for (const chunk of chunks) {
+      const match = chunk.match(/^<h2\s+id="([^"]+)"[^>]*>([\s\S]*?)<\/h2>/);
+      if (!match) {
+        secondary.push(chunk);
+        continue;
+      }
+
+      const [heading, id, inner] = match;
+      const label = inner.replace(/<[^>]+>/g, '');
+      const isIngredients = /ingredients/i.test(label);
+      const isSequence = /timing|method|steps|instructions|directions/i.test(label);
+      const isSource = /source/i.test(label);
+
+      let body = chunk.slice(heading.length);
+      body = isIngredients ? markQuantityLines(body) : emphasizeFigures(body);
+
+      const control = isIngredients && /<code>\d+g<\/code>/.test(body) ? scaleControl(id) : '';
+      const classes = ['recipe-section',
+        isIngredients && 'is-ingredients',
+        isSequence && 'is-sequence',
+        isSource && 'is-source'].filter(Boolean).join(' ');
+
+      const section = `<section class="${classes}" aria-labelledby="${id}">` +
+        `<div class="section-head">${heading}${control}</div>${body}</section>`;
+      (isIngredients ? primary : secondary).push(section);
     }
 
-    // Regex to find h2 headings containing "ingredients" (case-insensitive)
-    const ingredientsHeadingRegex = /<h2\s+id="([^"]+)"[^>]*>([^<]*ingredients[^<]*)<\/h2>/gi;
+    const columns = primary.length
+      ? `<div class="recipe-primary">${primary.join('')}</div><div class="recipe-secondary">${secondary.join('')}</div>`
+      : `<div class="recipe-secondary">${secondary.join('')}</div>`;
 
-    const matches = [];
-    let match;
-
-    // Collect all matches first (to avoid regex index issues during replacement)
-    while ((match = ingredientsHeadingRegex.exec(content)) !== null) {
-      matches.push({
-        fullMatch: match[0],
-        sectionId: match[1],
-        index: match.index
-      });
-    }
-
-    // Process in reverse order to preserve indices
-    let result = content;
-    for (let i = matches.length - 1; i >= 0; i--) {
-      const { fullMatch, sectionId, index } = matches[i];
-
-      const tabsHtml = `
-<div class="tabs is-toggle scaling-tabs" data-section-id="${sectionId}">
-  <ul>
-    <li class="is-active" data-scale="1"><a>1x</a></li>
-    <li data-scale="2"><a>2x</a></li>
-    <li data-scale="3"><a>3x</a></li>
-  </ul>
-</div>
-`;
-      result = result.slice(0, index) + tabsHtml + result.slice(index);
-    }
-
-    return result;
+    return `${preamble}<div class="recipe-columns${primary.length ? '' : ' is-single'}">${columns}</div>`;
   });
+
+  function scaleControl(sectionId) {
+    const buttons = [1, 2, 3].map(n =>
+      `<button type="button" data-scale="${n}" aria-pressed="${n === 1}">${n}×</button>`
+    ).join('');
+    return `<div class="scale-control" role="group" aria-label="Scale ingredients" data-section-id="${sectionId}">${buttons}</div>`;
+  }
+
+  // Split "<code>200g</code> starter" list items into an amount column and an
+  // item column. Items without a leading amount are left alone.
+  function markQuantityLines(html) {
+    return html.replace(/<li>([\s\S]*?)<\/li>/g, (whole, inner) => {
+      const parts = inner.match(/^(~?)\s*(<code>[^<]*<\/code>)\s*([\s\S]*)$/);
+      if (!parts || /<(ul|ol|li)[\s>]/.test(parts[3])) return whole;
+      return `<li class="has-qty"><span class="qty">${parts[1]}${parts[2]}</span> <span class="item">${parts[3]}</span></li>`;
+    });
+  }
+
+  // Bold durations ("20 minutes", "4-5 hours") and oven temperatures ("at 450",
+  // "400-425") in text, skipping anything inside links or code.
+  function emphasizeFigures(html) {
+    // A duration, or a bare three-digit number in oven range (not followed by a
+    // unit like "g", so weights in notes are left alone).
+    const figure = /\b\d+(?:\.\d+)?(?:\s?[-–]\s?\d+(?:\.\d+)?)?\s?(?:minutes?|mins?|hours?|hrs?|seconds?|secs?|days?)\b|\b[2-5]\d{2}(?:\s?[-–]\s?[2-5]\d{2})?(?:\s?[˚°]\s?[FC]?)?(?=[\s.,;:?)]|$)/gi;
+    let skipDepth = 0;
+    return html.split(/(<[^>]+>)/).map(part => {
+      if (part.startsWith('<')) {
+        if (/^<(a|code)[\s>]/i.test(part)) skipDepth++;
+        else if (/^<\/(a|code)>/i.test(part)) skipDepth = Math.max(0, skipDepth - 1);
+        return part;
+      }
+      if (skipDepth) return part;
+      return part.replace(figure, m => `<b class="fig">${m}</b>`);
+    }).join('');
+  }
 
   // Transform to mark scalable quantities with data attributes
   eleventyConfig.addTransform("markScalableQuantities", function(content, outputPath) {
@@ -116,7 +166,7 @@ export default function(eleventyConfig) {
     // Match <code>NNNg</code> pattern and add data attributes
     return content.replace(
       /<code>(\d+)g<\/code>/g,
-      '<code data-original-value="$1" data-scalable="true">$1g</code>'
+      '<code data-original-value="$1" data-scalable="true">$1<span class="unit">g</span></code>'
     );
   });
 
@@ -128,6 +178,8 @@ export default function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/manifest.json": "manifest.json" });
   eleventyConfig.addPassthroughCopy({ "src/sw.js": "sw.js" });
   eleventyConfig.addPassthroughCopy({ "src/icon.png": "icon.png" });
+  eleventyConfig.addPassthroughCopy({ "src/favicon.svg": "favicon.svg" });
+  eleventyConfig.addPassthroughCopy({ "src/fonts": "fonts" });
 
   // Watch for changes in dist (when Rollup rebuilds)
   eleventyConfig.addWatchTarget("dist/bundle.css");

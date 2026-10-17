@@ -2,28 +2,22 @@
 layout: base.njk
 ---
 
-<section class="section">
-  <div class="container">
-    {# Breadcrumbs #}
-    <nav class="breadcrumb" aria-label="breadcrumbs">
-      <ul>
-        <li><a href="{{ '/' | url }}">Home</a></li>
-        {% for crumb in page | buildBreadcrumbs %}
-          {% if crumb.isLast %}
-            <li class="is-active"><a href="{{ crumb.url | url }}" aria-current="page">{{ crumb.title | titleCase }}</a></li>
-          {% else %}
-            <li><a href="{{ crumb.url | url }}">{{ crumb.title | titleCase }}</a></li>
-          {% endif %}
-        {% endfor %}
-      </ul>
-    </nav>
+<div class="page">
+  {% include "breadcrumbs.njk" %}
 
-    <article class="content">
-      <h1 class="title">{{ title }}</h1>
-      {{ content | safe }}
-    </article>
+  <div class="title-row">
+    <h1 class="page-title">{{ title }}</h1>
+    {# Revealed by enableWakeLock, so it never shows as a dead control without JS #}
+    <button type="button" id="wake-lock-switch" class="wake-switch" role="switch" aria-checked="false" hidden>
+      <span class="wake-switch-label">Keep screen on</span>
+      <span class="wake-switch-track" aria-hidden="true"></span>
+    </button>
   </div>
-</section>
+
+  <article class="recipe-body">
+    {{ content | recipeSections | safe }}
+  </article>
+</div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {

@@ -1,8 +1,10 @@
-const CACHE_NAME = 'cookbook-v2';
+const CACHE_NAME = 'cookbook-v4';
 const PRECACHE_URLS = [
   '/',
   '/bundle.css',
   '/bundle.js',
+  '/fonts/archivo-latin.woff2',
+  '/fonts/archivo-latin-italic.woff2',
 ];
 
 self.addEventListener('install', event => {

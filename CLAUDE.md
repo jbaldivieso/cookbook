@@ -54,11 +54,17 @@ title: Pain de campagne
   `markScalableQuantities` transform in `.eleventy.js` only matches `<code>NNNg</code>`.
   Decimals, units other than grams, and ranges are not scalable, and scaling multiplies the
   number rather than reformatting it.
-- Any `<h2>` whose text contains "ingredients" (case-insensitive) gets 1x/2x/3x scaling tabs
-  injected above it by the `injectScalingTabs` transform. Scaling applies to the `<code>`
-  elements between that heading and the next `<h2>`, so keep ingredients in their own
-  section.
-- Both transforms only run on HTML output paths containing `/recipes/`.
+- `recipe.njk` pipes the rendered Markdown through the `recipeSections` filter, which wraps
+  each `<h2>` and what follows it in a `<section>`. Sections whose heading contains
+  "ingredients" (case-insensitive) go in the left column and get a 1x/2x/3x control beside
+  the heading, but only if they contain a scalable weight; everything else goes in the
+  right column. Scaling applies to the `<code>` weights inside that section, so keep
+  ingredients in their own section.
+- In ingredient sections, list items that start with a weight (optionally `~`) are split
+  into an amount column and an item column. Headings matching timing/method/steps/
+  instructions/directions get numbered lists. In non-ingredient sections, durations and
+  three-digit oven temperatures are bolded automatically.
+- `markScalableQuantities` only runs on HTML output paths containing `/recipes/`.
 - Recipes generally end with a `## Source` section crediting the original.
 
 ## Gotchas
@@ -69,17 +75,24 @@ title: Pain de campagne
 - `src/manifest.json` and `src/sw.js` are copied verbatim and hard-code root-absolute paths;
   they would need editing if the site ever moved back to a subpath.
 - PWA assets are passed through explicitly in `.eleventy.js` (`manifest.json`, `sw.js`,
-  `icon.png`). A new static asset in `src/` is *not* copied unless added there — note
-  `src/icon.svg` exists but is unused; the manifest and apple-touch-icon point at
-  `icon.png`.
+  `icon.png`, `favicon.svg`, and the self-hosted Archivo files in `src/fonts/`, which
+  `sw.js` also precaches). A new static asset in `src/` is *not* copied unless added
+  there. `icon.png` (512px, home-screen icon) and `favicon.svg` are drawings of the whisk
+  mark in `src/_includes/header.njk`; keep them in step if the mark changes.
 - `sw.js` uses a cache-first strategy for static assets keyed on `CACHE_NAME`
-  (`cookbook-v1`); bump that constant when changing precached assets, or clients will serve
+  (currently `cookbook-v4`); bump that constant when changing precached assets, or clients will serve
   stale bundles.
 - `src/main.js` exposes `enableWakeLock`, `initRecipeScaling`, and `initListItemToggle` on
   `window`; `recipe.njk` calls them from an inline `DOMContentLoaded` script. New page-level
-  JS needs the same wiring.
+  JS needs the same wiring. The keep-screen-on control is `#wake-lock-switch` in the recipe
+  title row; it stays `hidden` until `enableWakeLock` runs.
+- Styling lives in `src/custom.css` on top of Bulma, which is kept mainly for the navbar
+  (burger and dropdowns). `<html data-theme="light">` turns off Bulma's automatic dark mode,
+  since the design is light-only. The whisk mark in the header is absolutely positioned
+  and overflows the header on purpose; the header uses `overflow-x: clip` so it never
+  causes horizontal scroll.
 - The `.toc` class in `custom.css` styles the nav lists on the homepage and category pages;
   there is no per-recipe table of contents. `markdown-it-anchor` still runs, and the heading
-  ids it generates are what `injectScalingTabs` keys on — do not remove it.
-- Custom Eleventy filters available in templates: `buildBreadcrumbs`, `titleCase`,
-  `getChildren`, `categoriesOnly`.
+  ids it generates are what `recipeSections` keys on — do not remove it.
+- Custom Eleventy filters available in templates: `buildBreadcrumbs` (pass `navigation` to
+  get real category titles), `titleCase`, `getChildren`, `categoriesOnly`, `recipeSections`.

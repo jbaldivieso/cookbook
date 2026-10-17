@@ -1,0 +1,365 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-17T00:00:00Z",
+  "title": "Design System: Cookbook",
+  "extensions": {
+    "colorMeta": {
+      "form": {
+        "role": "primary",
+        "displayName": "Form Blue",
+        "canonical": "oklch(49.5% 0.137 259.9)",
+        "tonalRamp": [
+          "oklch(15% 0.137 259.9)",
+          "oklch(26% 0.137 259.9)",
+          "oklch(38% 0.137 259.9)",
+          "oklch(50% 0.137 259.9)",
+          "oklch(62% 0.137 259.9)",
+          "oklch(74% 0.137 259.9)",
+          "oklch(85% 0.137 259.9)",
+          "oklch(95% 0.137 259.9)"
+        ]
+      },
+      "highlighter": {
+        "role": "secondary",
+        "displayName": "Highlighter",
+        "canonical": "oklch(92.7% 0.195 114.9)",
+        "tonalRamp": [
+          "oklch(15% 0.195 114.9)",
+          "oklch(26% 0.195 114.9)",
+          "oklch(38% 0.195 114.9)",
+          "oklch(50% 0.195 114.9)",
+          "oklch(62% 0.195 114.9)",
+          "oklch(74% 0.195 114.9)",
+          "oklch(85% 0.195 114.9)",
+          "oklch(95% 0.195 114.9)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(20.9% 0.010 268.2)",
+        "tonalRamp": [
+          "oklch(15% 0.010 268.2)",
+          "oklch(26% 0.010 268.2)",
+          "oklch(38% 0.010 268.2)",
+          "oklch(50% 0.010 268.2)",
+          "oklch(62% 0.010 268.2)",
+          "oklch(74% 0.010 268.2)",
+          "oklch(85% 0.010 268.2)",
+          "oklch(95% 0.010 268.2)"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "oklch(49.3% 0.025 268.2)",
+        "tonalRamp": [
+          "oklch(15% 0.025 268.2)",
+          "oklch(26% 0.025 268.2)",
+          "oklch(38% 0.025 268.2)",
+          "oklch(50% 0.025 268.2)",
+          "oklch(62% 0.025 268.2)",
+          "oklch(74% 0.025 268.2)",
+          "oklch(85% 0.025 268.2)",
+          "oklch(95% 0.025 268.2)"
+        ]
+      },
+      "ink-done": {
+        "role": "neutral",
+        "displayName": "Done Ink",
+        "canonical": "oklch(73.1% 0.017 266.2)",
+        "tonalRamp": [
+          "oklch(15% 0.017 266.2)",
+          "oklch(26% 0.017 266.2)",
+          "oklch(38% 0.017 266.2)",
+          "oklch(50% 0.017 266.2)",
+          "oklch(62% 0.017 266.2)",
+          "oklch(74% 0.017 266.2)",
+          "oklch(85% 0.017 266.2)",
+          "oklch(95% 0.017 266.2)"
+        ]
+      },
+      "form-rule": {
+        "role": "neutral",
+        "displayName": "Form Rule",
+        "canonical": "oklch(87.3% 0.034 261.0)",
+        "tonalRamp": [
+          "oklch(15% 0.034 261.0)",
+          "oklch(26% 0.034 261.0)",
+          "oklch(38% 0.034 261.0)",
+          "oklch(50% 0.034 261.0)",
+          "oklch(62% 0.034 261.0)",
+          "oklch(74% 0.034 261.0)",
+          "oklch(85% 0.034 261.0)",
+          "oklch(95% 0.034 261.0)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "oklch(100% 0 0)",
+        "tonalRamp": [
+          "oklch(15% 0.000 0.0)",
+          "oklch(26% 0.000 0.0)",
+          "oklch(38% 0.000 0.0)",
+          "oklch(50% 0.000 0.0)",
+          "oklch(62% 0.000 0.0)",
+          "oklch(74% 0.000 0.0)",
+          "oklch(85% 0.000 0.0)",
+          "oklch(95% 0.000 0.0)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Recipe or category title, one per page; 90% width."
+      },
+      "display-compact": {
+        "displayName": "Display (phone)",
+        "purpose": "The title at 768px and below."
+      },
+      "section-label": {
+        "displayName": "Section Label",
+        "purpose": "Section h2s (Ingredients, Timing, Source); expanded caps in Form Blue."
+      },
+      "crumb": {
+        "displayName": "Crumb",
+        "purpose": "Parent-category breadcrumb above the title; expanded caps in Form Blue."
+      },
+      "subhead": {
+        "displayName": "Subhead",
+        "purpose": "h3s inside a recipe body."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Ingredients, steps and notes at counter-reading size; paragraphs capped at 65ch."
+      },
+      "amount": {
+        "displayName": "Amount",
+        "purpose": "Gram weights in the right-aligned amount column; unit at 0.72em/700."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Durations and oven temperatures bolded in running text."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Nav items; switch label at 1.125rem; scale numerals at 800."
+      },
+      "note": {
+        "displayName": "Note",
+        "purpose": "Source section, Soft Ink."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Footer hint, Soft Ink."
+      }
+    },
+    "fonts": [
+      {
+        "family": "Archivo",
+        "source": "self-hosted variable woff2 (src/fonts/archivo-latin.woff2, archivo-latin-italic.woff2), Latin subset, preloaded and precached",
+        "axes": {
+          "wght": "100 900",
+          "wdth": "62% 125%"
+        }
+      }
+    ],
+    "shadows": [],
+    "borders": [
+      {
+        "name": "header-rule",
+        "value": "3px solid #2f5fae",
+        "purpose": "Full-bleed rule under the header bar."
+      },
+      {
+        "name": "row-rule",
+        "value": "1px solid #c9d6ec",
+        "purpose": "Between ingredient rows, under the title row, above the footer."
+      },
+      {
+        "name": "control-border",
+        "value": "1.5px solid #c9d6ec",
+        "purpose": "Resting scale button; Form Blue on hover, Ink when selected."
+      },
+      {
+        "name": "switch-outline",
+        "value": "2px solid #2f5fae",
+        "purpose": "Wake switch track."
+      },
+      {
+        "name": "focus-ring",
+        "value": "outline: 3px solid #2f5fae; outline-offset: 2px",
+        "purpose": "Every :focus-visible."
+      }
+    ],
+    "motion": [
+      {
+        "name": "switch",
+        "value": "0.15s ease-out",
+        "purpose": "Wake switch track fill and knob slide; the only transition."
+      },
+      {
+        "name": "instant",
+        "value": "none",
+        "purpose": "Scale selection, cross-off and nav hover change instantly; no entrance motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "768px",
+        "purpose": "max-width: 18px gutter, 42px title, title row stacks, whisk 180px."
+      },
+      {
+        "name": "stack",
+        "value": "899px",
+        "purpose": "max-width: recipe columns stack."
+      },
+      {
+        "name": "desktop-nav",
+        "value": "1024px",
+        "purpose": "Bulma navbar burger below this (provisional nav)."
+      }
+    ],
+    "identity": {
+      "mark": "whisk",
+      "viewBox": "-40 -40 80 80",
+      "rotation": "220deg (header), 140deg (favicon)",
+      "placement": "240px, top -61px, right calc(page-edge - 108px); phone 180px, top -52px, right -34px",
+      "proportions": "owner's whisk: ~9.5in overall, ~3.5in handle, slow taper widening near the tip",
+      "haloStroke": 7,
+      "appName": "Cookbook (manifest only; no wordmark)"
+    },
+    "status": {
+      "designed": [
+        "recipe page",
+        "header",
+        "footer",
+        "breadcrumb"
+      ],
+      "provisional": [
+        "header nav items and dropdowns"
+      ],
+      "undesigned": [
+        "home page",
+        "category pages",
+        "index lists (.toc)"
+      ],
+      "theme": "light only (data-theme=light, color-scheme light)"
+    }
+  },
+  "components": [
+    {
+      "name": "Scale Control",
+      "kind": "button",
+      "refersTo": "scale-button",
+      "description": "1x/2x/3x printed boxes in the Ingredients label row; the chosen scale is highlighted and only its amounts are shown.",
+      "html": "<div class=\"ds-scale\" role=\"group\" aria-label=\"Scale ingredients\"><button type=\"button\" aria-pressed=\"true\">1×</button><button type=\"button\" aria-pressed=\"false\">2×</button><button type=\"button\" aria-pressed=\"false\">3×</button></div>",
+      "css": ":host{--ink:#16181d;--ink-soft:#5b6170;--ink-done:#a3a8b3;--form:#2f5fae;--form-rule:#c9d6ec;--highlighter:#e4f53a;--paper:#ffffff;} .ds-scale{display:inline-flex;gap:6px;font-family:Archivo,system-ui,sans-serif;} .ds-scale button{min-width:48px;min-height:44px;padding:0 12px;border:1.5px solid var(--form-rule);border-radius:4px;background:var(--paper);font:inherit;font-weight:800;font-size:1.1875rem;color:var(--form);cursor:pointer;} .ds-scale button:hover{border-color:var(--form);} .ds-scale button:focus-visible{outline:3px solid var(--form);outline-offset:2px;} .ds-scale button[aria-pressed=\"true\"]{border-color:var(--ink);background:var(--highlighter);color:var(--ink);}"
+    },
+    {
+      "name": "Keep-Screen-On Switch",
+      "kind": "custom",
+      "refersTo": "wake-switch-track-on",
+      "description": "role=switch toggle; Form Blue outline when off, Form Blue fill with Highlighter knob while a wake lock is held.",
+      "html": "<button type=\"button\" class=\"ds-wake\" role=\"switch\" aria-checked=\"true\"><span>Keep screen on</span><span class=\"ds-track\" aria-hidden=\"true\"></span></button>",
+      "css": ":host{--ink:#16181d;--ink-soft:#5b6170;--ink-done:#a3a8b3;--form:#2f5fae;--form-rule:#c9d6ec;--highlighter:#e4f53a;--paper:#ffffff;} .ds-wake{display:inline-flex;align-items:center;gap:12px;min-height:44px;padding:0;border:0;background:none;font-family:Archivo,system-ui,sans-serif;font-weight:600;font-size:1.125rem;color:var(--ink);cursor:pointer;} .ds-wake:focus-visible{outline:3px solid var(--form);outline-offset:2px;} .ds-track{position:relative;flex:none;width:52px;height:30px;border:2px solid var(--form);border-radius:15px;background:var(--paper);transition:background-color .15s ease-out;} .ds-track::after{content:\"\";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--form);transition:transform .15s ease-out,background-color .15s ease-out;} .ds-wake[aria-checked=\"true\"] .ds-track{background:var(--form);} .ds-wake[aria-checked=\"true\"] .ds-track::after{transform:translateX(22px);background:var(--highlighter);} .ds-wake:disabled{color:var(--ink-soft);cursor:default;} .ds-wake:disabled .ds-track{border-color:var(--ink-done);} .ds-wake:disabled .ds-track::after{background:var(--ink-done);}"
+    },
+    {
+      "name": "Ingredients Section",
+      "kind": "custom",
+      "refersTo": "ingredient-row",
+      "description": "Form Blue section label with the scale control, then ruled rows with a right-aligned bold tabular amount column; tap a row to cross it off.",
+      "html": "<section class=\"ds-ing\"><div class=\"ds-head\"><h2>Ingredients</h2></div><ul><li class=\"has-qty\"><span class=\"qty\"><code>200<span class=\"unit\">g</span></code></span><span>starter (hot)</span></li><li class=\"has-qty done\"><span class=\"qty\"><code>300<span class=\"unit\">g</span></code></span><span>water (90-95˚)</span></li><li class=\"has-qty\"><span class=\"qty\"><code>11<span class=\"unit\">g</span></code></span><span>salt</span></li></ul></section>",
+      "css": ":host{--ink:#16181d;--ink-soft:#5b6170;--ink-done:#a3a8b3;--form:#2f5fae;--form-rule:#c9d6ec;--highlighter:#e4f53a;--paper:#ffffff;} .ds-ing{font-family:Archivo,system-ui,sans-serif;color:var(--ink);max-width:400px;} .ds-head{display:flex;align-items:center;min-height:44px;margin-bottom:6px;} .ds-head h2{margin:0;font-weight:700;font-size:.875rem;font-stretch:125%;line-height:1;letter-spacing:.16em;text-transform:uppercase;color:var(--form);} .ds-ing ul{margin:0;padding:0;list-style:none;} .ds-ing li{display:grid;grid-template-columns:4.6rem minmax(0,1fr);column-gap:14px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--form-rule);font-size:1.375rem;line-height:1.3;cursor:pointer;user-select:none;} .ds-ing li:hover{color:var(--form);} .ds-ing li.done{color:var(--ink-done);text-decoration:line-through;text-decoration-thickness:2px;} .ds-ing .qty{text-align:right;white-space:nowrap;} .ds-ing code{font:inherit;font-weight:800;font-size:1.14em;font-variant-numeric:tabular-nums;background:none;color:inherit;padding:0;} .ds-ing .unit{margin-inline-start:1px;font-size:.72em;font-weight:700;}"
+    },
+    {
+      "name": "Step List",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Numbered Timing/Method steps with hung Form Blue numerals and bolded durations and temperatures.",
+      "html": "<section class=\"ds-steps\"><h2>Timing</h2><ol><li>Autolyse: <b>20 minutes</b>, then mix.</li><li class=\"done\">First fold after <b>10 minutes</b>.</li><li>Bake at <b>450</b> in closed dutch oven for <b>40 minutes</b>.</li></ol></section>",
+      "css": ":host{--ink:#16181d;--ink-soft:#5b6170;--ink-done:#a3a8b3;--form:#2f5fae;--form-rule:#c9d6ec;--highlighter:#e4f53a;--paper:#ffffff;} .ds-steps{font-family:Archivo,system-ui,sans-serif;color:var(--ink);} .ds-steps h2{margin:0 0 18px;font-weight:700;font-size:.875rem;font-stretch:125%;letter-spacing:.16em;text-transform:uppercase;color:var(--form);} .ds-steps ol{margin:0;padding:0;list-style:none;counter-reset:step;} .ds-steps li{position:relative;padding:0 0 15px 34px;counter-increment:step;font-size:1.375rem;line-height:1.4;cursor:pointer;user-select:none;} .ds-steps li::before{content:counter(step);position:absolute;left:0;font-weight:800;font-variant-numeric:tabular-nums;color:var(--form);} .ds-steps b{font-weight:800;} .ds-steps li.done{color:var(--ink-done);text-decoration:line-through;text-decoration-thickness:2px;} .ds-steps li.done::before{color:var(--ink-done);}"
+    },
+    {
+      "name": "Title Row",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Expanded-caps breadcrumb, then the condensed 800 title beside the wake switch, closed by a 1px Form Rule.",
+      "html": "<div class=\"ds-title\"><nav class=\"ds-crumbs\" aria-label=\"Breadcrumb\"><a href=\"#\">Bread</a><span>/</span><a href=\"#\">Sourdough</a></nav><div class=\"ds-row\"><h1>Pain de campagne</h1></div></div>",
+      "css": ":host{--ink:#16181d;--ink-soft:#5b6170;--ink-done:#a3a8b3;--form:#2f5fae;--form-rule:#c9d6ec;--highlighter:#e4f53a;--paper:#ffffff;} .ds-title{font-family:Archivo,system-ui,sans-serif;} .ds-crumbs{display:flex;gap:.5em;font-weight:600;font-size:.9375rem;font-stretch:125%;letter-spacing:.12em;text-transform:uppercase;color:var(--form);} .ds-crumbs a{color:var(--form);text-decoration:none;} .ds-crumbs a:hover{text-decoration:underline;} .ds-crumbs a:focus-visible{outline:3px solid var(--form);outline-offset:2px;} .ds-row{margin-top:12px;padding-bottom:20px;border-bottom:1px solid var(--form-rule);} .ds-row h1{margin:0;font-weight:800;font-size:3.375rem;font-stretch:90%;line-height:1.02;letter-spacing:-.015em;text-wrap:balance;color:var(--ink);}"
+    },
+    {
+      "name": "Header with Whisk Mark",
+      "kind": "nav",
+      "refersTo": "header-bar",
+      "description": "72px Paper bar with a 3px Form Blue rule; the oversized whisk dips in from the top-right, cutting the rule with a Paper halo. Nav items are provisional.",
+      "html": "<header class=\"ds-header\"><a class=\"ds-whisk\" href=\"#\" aria-label=\"Cookbook home\"><svg viewBox=\"-40 -40 80 80\" aria-hidden=\"true\"><defs><g id=\"ds-whisk\"><path class=\"ds-wire\" d=\"M2.6 37C3.6 30 9.6 17 9.6 8.5C9.6 3.2 5.4 0 0 0C-5.4 0 -9.6 3.2 -9.6 8.5C-9.6 17 -3.6 30 -2.6 37\"/><path class=\"ds-wire\" d=\"M1.4 37C2.2 30 5.4 17 5.4 8.5C5.4 3.5 3.2 0 0 0C-3.2 0 -5.4 3.5 -5.4 8.5C-5.4 17 -2.2 30 -1.4 37\"/><path class=\"ds-wire\" d=\"M0 37V0\"/><rect class=\"ds-ferrule\" x=\"-3.4\" y=\"35.5\" width=\"6.8\" height=\"4.5\" rx=\"1.2\"/><path class=\"ds-grip\" d=\"M-2.7 40.6L-3.3 57.2Q-3.3 60.3 0 60.3Q3.3 60.3 3.3 57.2L2.7 40.6Z\"/></g></defs><g transform=\"rotate(220) translate(0 -30)\"><use href=\"#ds-whisk\" class=\"ds-halo\"/><use href=\"#ds-whisk\"/></g></svg></a><nav class=\"ds-bar\"><a href=\"#\">Home</a><a href=\"#\">Bread</a><a href=\"#\">Other Baked Goods</a></nav></header>",
+      "css": ":host{--ink:#16181d;--ink-soft:#5b6170;--ink-done:#a3a8b3;--form:#2f5fae;--form-rule:#c9d6ec;--highlighter:#e4f53a;--paper:#ffffff;} .ds-header{position:relative;overflow:hidden;height:150px;font-family:Archivo,system-ui,sans-serif;} .ds-bar{display:flex;align-items:center;gap:24px;min-height:72px;padding:0 24px;border-bottom:3px solid var(--form);background:var(--paper);} .ds-bar a{font-weight:600;font-size:1.1875rem;color:var(--ink);text-decoration:none;} .ds-bar a:hover{color:var(--form);} .ds-bar a:focus-visible{outline:3px solid var(--form);outline-offset:2px;} .ds-whisk{position:absolute;z-index:2;top:-61px;right:-60px;width:240px;height:240px;pointer-events:none;} .ds-whisk svg{display:block;width:100%;height:100%;overflow:visible;} .ds-whisk use{pointer-events:visiblePainted;} .ds-wire{fill:none;stroke:var(--w-ink,var(--form));stroke-width:var(--w-weight,2.5);stroke-linecap:round;stroke-linejoin:round;} .ds-ferrule{fill:var(--w-ink,var(--form));stroke:var(--w-outline,none);stroke-width:var(--w-weight,0);} .ds-grip{fill:var(--w-grip,var(--highlighter));stroke:var(--w-ink,var(--form));stroke-width:var(--w-grip-weight,2);stroke-linejoin:round;} .ds-halo{--w-ink:var(--paper);--w-outline:var(--paper);--w-grip:var(--paper);--w-weight:7;--w-grip-weight:7;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Form Ink",
+    "overview": "**Creative North Star: \"Form Ink\"**\n\nThe standard modern recipe page (title, ingredients on the left, numbered timing on the right, one scale switch, one screen-on switch), printed like a bakery production form. The ground is white bond and the ink is near-black. Everything that is *printed structure* (the header rule, the wide-tracked capital labels, the step numerals, the breadcrumb, links, focus rings) is in one form blue. Everything that is *active right now* (the chosen scale, the switch knob when the screen is being held on, selected text) is marked in highlighter. The cook's own words sit on the form at counter-reading size, with the amounts set heaviest so the eye finds the number first.\n\nThe world is ruled, not raised. Rows are divided by thin pale-blue rules, the header by a 3px form-blue rule, and there are no cards, chips, shadows or photographs. A single variable family, Archivo, does all the lettering; its width axis carries role, condensed for the title and expanded for the labels. The site's identity is an oversized whisk, drawn to the owner's own whisk, that dips in from the top-right edge and crosses the header rule. It stands in for a wordmark (\"Cookbook\" remains only the manifest and document name).\n\nIt refuses the food-blog card and the bookish notebook alike. Light mode only: `data-theme=\"light\"` and `color-scheme: light` switch off Bulma's dark scheme, and dark mode is not designed.\n\nScope of evidence: the recipe page and the shared header and footer are designed. The home and category pages inherit the header, type and colors but have not been designed yet; their current index-list styling is a placeholder, not a pattern. The header nav items are provisional, pending a separate navigation redesign.",
+    "keyCharacteristics": [
+      "One family, Archivo (self-hosted variable woff2, weight 100–900, width 62–125%), with width as a role signal.",
+      "Two-color ink system: form blue for printed structure, highlighter for live state only.",
+      "Amounts in a right-aligned bold tabular column; durations and oven temperatures bolded in running text.",
+      "22px reading size for anything read mid-task; tap targets at least 44px.",
+      "Ruled rows, square corners or 4px at most, no elevation.",
+      "The whisk mark as identity, cropped by the page edge and cutting the header rule with a white halo.",
+      "Instant state changes; no entrance motion."
+    ],
+    "rules": [
+      {
+        "name": "The Printed Structure Rule",
+        "body": "If it is part of the form (rule, label, numeral, bullet, link, focus ring), it is Form Blue. Text the cook wrote is Ink.",
+        "section": "colors"
+      },
+      {
+        "name": "The Highlighter Is Live Rule",
+        "body": "Highlighter marks state that is currently on: the chosen scale, the held wake lock, selected text. The only resting use is the whisk's grip, which belongs to the identity mark. Nothing else gets highlighter at rest.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Family Rule",
+        "body": "Archivo is the only face. Role is carried by width, weight and case, not by a second family or a monospace.",
+        "section": "typography"
+      },
+      {
+        "name": "The Amount First Rule",
+        "body": "Amounts, times and temperatures are the heaviest marks in their line (800). The cook should find the number before the word.",
+        "section": "typography"
+      },
+      {
+        "name": "The Arm's-Length Rule",
+        "body": "Anything read mid-task is set at 22px or larger. Below that is reserved for labels, wayfinding and the footer hint.",
+        "section": "typography"
+      },
+      {
+        "name": "The Ruled, Not Raised Rule",
+        "body": "Structure is drawn with lines. No cards, panels, raised surfaces or drop shadows.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** draw every piece of form structure (rules, labels, numerals, bullets, links, focus) in Form Blue and the cook's content in Ink.",
+      "**Do** reserve Highlighter for live state: the chosen scale, the held wake lock, selected text.",
+      "**Do** set anything read mid-task at 22px or larger, with amounts, times and temperatures at 800.",
+      "**Do** keep tap targets at least 44px tall and state changes instant.",
+      "**Do** separate rows and regions with 1px Form Rule lines and the 3px Form Blue header rule.",
+      "**Do** keep the whisk as the identity: cropped by the top-right edge, crossing the header rule with its Paper halo."
+    ],
+    "donts": [
+      "**Don't** add cards, shadows, raised panels, chips or pill-shaped buttons; the toggle switch is the only rounded form.",
+      "**Don't** introduce a second typeface or a monospace for amounts; use Archivo's tabular figures.",
+      "**Don't** show amounts for scales other than the chosen one, or computed totals.",
+      "**Don't** use Highlighter at rest outside the whisk grip, or as a text color on white.",
+      "**Don't** add entrance or decorative motion.",
+      "**Don't** design or preserve a dark mode; the site is light only.",
+      "**Don't** treat the current nav items or the home/category index lists as settled patterns."
+    ]
+  }
+}

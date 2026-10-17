@@ -9,34 +9,25 @@ import './custom.css';
 // since iOS 18.4.
 let wakeLock = null;
 let wakeLockEnabled = false;
-let statusEl = null;
+let pendingRequest = null;
+let switchEl = null;
 let gestureRetryArmed = false;
 
 const GESTURE_EVENTS = ['pointerdown', 'touchend', 'keydown'];
 
-const STATUS_TEXT = {
-  active: 'Screen staying on',
-  idle: 'Tap to keep screen on',
-  denied: 'Tap to keep screen on',
-  unsupported: 'Screen may sleep',
-};
-
-const STATUS_CLASS = {
-  active: 'is-success',
-  idle: 'is-warning',
-  denied: 'is-warning',
-  unsupported: 'is-light',
-};
-
+// The switch reads "on" only while a lock is actually held. "off" means the
+// cook turned it off; "idle" and "denied" mean we want a lock but lack one.
 function setStatus(state, detail) {
   console.log('Wake lock:', state, detail || '');
 
-  if (!statusEl) return;
+  if (!switchEl) return;
 
-  statusEl.textContent = STATUS_TEXT[state];
-  statusEl.classList.remove('is-success', 'is-warning', 'is-light');
-  statusEl.classList.add(STATUS_CLASS[state]);
-  statusEl.hidden = false;
+  const unsupported = state === 'unsupported';
+  switchEl.setAttribute('aria-checked', String(state === 'active'));
+  switchEl.disabled = unsupported;
+  switchEl.querySelector('.wake-switch-label').textContent =
+    unsupported ? 'Screen may sleep' : 'Keep screen on';
+  switchEl.hidden = false;
 }
 
 async function requestWakeLock() {
@@ -46,34 +37,45 @@ async function requestWakeLock() {
   }
 
   if (wakeLock) return true;
+  if (pendingRequest) return pendingRequest;
 
-  try {
-    wakeLock = await navigator.wakeLock.request('screen');
-    setStatus('active');
+  pendingRequest = (async () => {
+    try {
+      const lock = await navigator.wakeLock.request('screen');
+      wakeLock = lock;
+      setStatus('active');
 
-    // Fires when the page is hidden, or when the system drops the lock. Do not
-    // re-request from here: the document is typically already hidden by then and
-    // the request would throw. Re-acquisition happens on the visibility path.
-    wakeLock.addEventListener('release', () => {
+      // Fires when the page is hidden, or when the system drops the lock. Do not
+      // re-request from here: the document is typically already hidden by then and
+      // the request would throw. Re-acquisition happens on the visibility path.
+      lock.addEventListener('release', () => {
+        if (wakeLock === lock) wakeLock = null;
+        setStatus(wakeLockEnabled ? 'idle' : 'off');
+      });
+
+      return true;
+    } catch (err) {
       wakeLock = null;
-      setStatus('idle');
-    });
+      setStatus('denied', `${err.name}: ${err.message}`);
+      return false;
+    } finally {
+      pendingRequest = null;
+    }
+  })();
 
-    return true;
-  } catch (err) {
-    wakeLock = null;
-    setStatus('denied', `${err.name}: ${err.message}`);
-    return false;
-  }
+  return pendingRequest;
 }
 
 // Some rejections (notably on iOS) clear once the user interacts with the page,
-// so retry inside a real user gesture rather than giving up.
+// so retry inside a real user gesture rather than giving up. Taps on the switch
+// itself are left to its own click handler.
 function armGestureRetry() {
   if (gestureRetryArmed || !('wakeLock' in navigator)) return;
   gestureRetryArmed = true;
 
-  const retry = async () => {
+  const retry = async (event) => {
+    if (switchEl && switchEl.contains(event.target)) return;
+
     GESTURE_EVENTS.forEach(evt => document.removeEventListener(evt, retry));
     gestureRetryArmed = false;
 
@@ -83,7 +85,7 @@ function armGestureRetry() {
     if (!acquired) armGestureRetry();
   };
 
-  GESTURE_EVENTS.forEach(evt => document.addEventListener(evt, retry, { once: true }));
+  GESTURE_EVENTS.forEach(evt => document.addEventListener(evt, retry));
 }
 
 async function reacquireWakeLock() {
@@ -95,12 +97,24 @@ async function reacquireWakeLock() {
   if (!acquired) armGestureRetry();
 }
 
-function initStatusBadge() {
-  statusEl = document.getElementById('wake-lock-status');
-  if (!statusEl) return;
+function initWakeSwitch() {
+  switchEl = document.getElementById('wake-lock-switch');
+  if (!switchEl) return;
 
-  statusEl.addEventListener('click', () => {
-    if (!wakeLock) reacquireWakeLock();
+  // Show it right away (off) rather than waiting on the first request, which
+  // can take a while to settle.
+  switchEl.hidden = false;
+
+  switchEl.addEventListener('click', async () => {
+    if (wakeLock) {
+      wakeLockEnabled = false;
+      await wakeLock.release();
+      return;
+    }
+
+    wakeLockEnabled = true;
+    const acquired = await requestWakeLock();
+    if (!acquired) armGestureRetry();
   });
 }
 
@@ -109,7 +123,7 @@ async function enableWakeLock() {
   if (wakeLockEnabled) return;
   wakeLockEnabled = true;
 
-  initStatusBadge();
+  initWakeSwitch();
 
   document.addEventListener('visibilitychange', reacquireWakeLock);
   // iOS restores pages from the back/forward cache without always firing
@@ -122,64 +136,47 @@ async function enableWakeLock() {
 
 // Recipe scaling functionality
 function initRecipeScaling() {
-  const scalingTabs = document.querySelectorAll('.scaling-tabs');
+  const controls = document.querySelectorAll('.scale-control');
 
-  if (scalingTabs.length === 0) return;
+  if (controls.length === 0) return;
 
   const pagePath = window.location.pathname;
 
-  scalingTabs.forEach(tabsContainer => {
-    const sectionId = tabsContainer.dataset.sectionId;
+  controls.forEach(control => {
+    const sectionId = control.dataset.sectionId;
     const storageKey = `recipe-scale:${pagePath}:${sectionId}`;
 
-    // Find the ingredients section (content between this h2 and next h2)
-    const heading = document.getElementById(sectionId);
-    if (!heading) return;
+    // The control lives in its ingredients section's heading row
+    const section = control.closest('section');
+    if (!section) return;
 
-    const scalableElements = getScalableElementsForSection(heading);
+    const scalableElements = section.querySelectorAll('code[data-scalable="true"]');
+    const buttons = control.querySelectorAll('button[data-scale]');
+
+    const selectScale = scale => {
+      applyScale(scalableElements, scale);
+      buttons.forEach(button => {
+        button.setAttribute('aria-pressed', String(parseInt(button.dataset.scale, 10) === scale));
+      });
+    };
 
     // Restore saved scale
     const savedScale = localStorage.getItem(storageKey);
     if (savedScale) {
       const scale = parseInt(savedScale, 10);
       if ([1, 2, 3].includes(scale)) {
-        applyScale(scalableElements, scale);
-        updateActiveTab(tabsContainer, scale);
+        selectScale(scale);
       }
     }
 
-    // Add click handlers to tabs
-    const tabItems = tabsContainer.querySelectorAll('li[data-scale]');
-    tabItems.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const scale = parseInt(tab.dataset.scale, 10);
-
-        // Update UI
-        tabItems.forEach(t => t.classList.remove('is-active'));
-        tab.classList.add('is-active');
-
-        // Apply scaling
-        applyScale(scalableElements, scale);
-
-        // Persist
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const scale = parseInt(button.dataset.scale, 10);
+        selectScale(scale);
         localStorage.setItem(storageKey, scale.toString());
       });
     });
   });
-}
-
-// Get all scalable <code> elements between a heading and the next h2
-function getScalableElementsForSection(heading) {
-  const elements = [];
-  let sibling = heading.nextElementSibling;
-
-  while (sibling && sibling.tagName !== 'H2') {
-    const codes = sibling.querySelectorAll('code[data-scalable="true"]');
-    codes.forEach(code => elements.push(code));
-    sibling = sibling.nextElementSibling;
-  }
-
-  return elements;
 }
 
 // Apply scale factor to all scalable elements
@@ -187,25 +184,13 @@ function applyScale(elements, scale) {
   elements.forEach(el => {
     const original = parseInt(el.dataset.originalValue, 10);
     const scaled = original * scale;
-    el.textContent = `${scaled}g`;
-  });
-}
-
-// Update active state on tabs
-function updateActiveTab(tabsContainer, scale) {
-  const tabItems = tabsContainer.querySelectorAll('li[data-scale]');
-  tabItems.forEach(tab => {
-    if (parseInt(tab.dataset.scale, 10) === scale) {
-      tab.classList.add('is-active');
-    } else {
-      tab.classList.remove('is-active');
-    }
+    el.innerHTML = `${scaled}<span class="unit">g</span>`;
   });
 }
 
 // Toggle strikethrough on list items
 function initListItemToggle() {
-  const listItems = document.querySelectorAll('.content li:not([data-scale])');
+  const listItems = document.querySelectorAll('.recipe-body li');
 
   listItems.forEach(li => {
     li.addEventListener('click', () => {

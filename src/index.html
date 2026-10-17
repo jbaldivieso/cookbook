@@ -6,12 +6,10 @@ siteTitle: Recipes
 
 {% from "nav-tree.njk" import renderNavTree %}
 
-<section class="section">
-  <div class="container">
-    <h1 class="title">{{ siteTitle }}</h1>
+<div class="page">
+  <h1 class="page-title">{{ siteTitle }}</h1>
 
-    <nav class="toc">
-      {{ renderNavTree(navigation | categoriesOnly) }}
-    </nav>
-  </div>
-</section>
+  <nav class="toc">
+    {{ renderNavTree(navigation | categoriesOnly) }}
+  </nav>
+</div>
