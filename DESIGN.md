@@ -114,6 +114,17 @@ typography:
     fontFamily: "Archivo, system-ui, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
+  readout:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "36px"
+    fontWeight: 800
+    fontFeature: "tnum"
+  clock:
+    fontFamily: "Archivo, system-ui, sans-serif"
+    fontSize: "1.375rem"
+    fontWeight: 800
+    lineHeight: 1.2
+    fontFeature: "tnum"
 rounded:
   control: "4px"
   switch: "15px"
@@ -138,6 +149,11 @@ spacing:
   row-catalog: "64px"
   row-catalog-phone: "58px"
   glyph: "24px"
+  clock-column: "8rem"
+  clock-column-phone: "7rem"
+  clock-gap: "14px"
+  clock-gap-phone: "8px"
+  rail: "30px"
 components:
   header-bar:
     backgroundColor: "{colors.paper}"
@@ -254,6 +270,52 @@ components:
   breadcrumb:
     textColor: "{colors.form}"
     typography: "{typography.crumb}"
+  timeline-control:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.form}"
+    rounded: "{rounded.control}"
+    padding: "0 13px"
+    height: "44px"
+  timeline-clock:
+    textColor: "{colors.ink}"
+    typography: "{typography.clock}"
+    rounded: "{rounded.control}"
+    height: "44px"
+  timeline-clock-night:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.paper}"
+    typography: "{typography.clock}"
+    rounded: "{rounded.control}"
+    padding: "4px 6px 5px"
+  timeline-slot:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.form}"
+    rounded: "{rounded.control}"
+    height: "44px"
+  timeline-slot-editing:
+    backgroundColor: "{colors.highlighter}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.control}"
+    height: "44px"
+  timeline-now-chip:
+    backgroundColor: "{colors.highlighter}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.control}"
+    padding: "3px 6px"
+  time-editor-readout:
+    textColor: "{colors.ink}"
+    typography: "{typography.readout}"
+    height: "56px"
+  time-editor-stepper:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.form}"
+    rounded: "{rounded.control}"
+    size: "56px"
+  time-editor-set:
+    backgroundColor: "{colors.form}"
+    textColor: "{colors.paper}"
+    rounded: "{rounded.control}"
+    height: "52px"
 ---
 
 # Design System: Cookbook
@@ -262,7 +324,7 @@ components:
 
 **Creative North Star: "Form Ink"**
 
-The standard modern recipe page (title, ingredients on the left, numbered timing on the right, one scale switch, one screen-on switch), printed like a bakery production form, and a homepage catalog filed like a tabbed register: square printed tabs, one category's recipes as large ruled rows, and a find field that reaches across every tab. The ground is white bond and the ink is near-black. Everything that is *printed structure* (the header rule, the wide-tracked capital labels, the step numerals, the breadcrumb, links, focus rings) is in one form blue. Everything that is *active right now* (the chosen scale, the selected catalog tab, the letters a search matched, the switch knob when the screen is being held on, selected text) is marked in highlighter. The cook's own words sit on the form at counter-reading size, with the amounts set heaviest so the eye finds the number first.
+The standard modern recipe page (title, ingredients on the left, timing on the right, one scale switch, one screen-on switch), printed like a bakery production form, with timing drawn as a production schedule the cook can pin to the clock, and a homepage catalog filed like a tabbed register: square printed tabs, one category's recipes as large ruled rows, and a find field that reaches across every tab. The ground is white bond and the ink is near-black. Everything that is *printed structure* (the header rule, the wide-tracked capital labels, the step numerals, the breadcrumb, links, focus rings) is in one form blue. Everything that is *active right now* (the chosen scale, the selected catalog tab, the letters a search matched, the switch knob when the screen is being held on, the timing slot being edited, where the clock is now, selected text) is marked in highlighter. The cook's own words sit on the form at counter-reading size, with the amounts set heaviest so the eye finds the number first.
 
 The world is ruled, not raised. Rows are divided by thin pale-blue rules, the header by a 3px form-blue rule, and there are no cards, chips, shadows or photographs. A single variable family, Archivo, does all the lettering; its width axis carries role, condensed for the title and expanded for the labels. The site's identity is an oversized whisk, drawn to the owner's own whisk, that dips in from the top-right edge and crosses the header rule. It stands in for a wordmark ("Cookbook" remains only the manifest and document name).
 
@@ -274,6 +336,7 @@ Scope of evidence: the recipe page, the homepage catalog, and the shared header,
 - One family, Archivo (self-hosted variable woff2, weight 100–900, width 62–125%), with width as a role signal.
 - Two-color ink system: form blue for printed structure, highlighter for live state only.
 - Amounts in a right-aligned bold tabular column; durations and oven temperatures bolded in running text.
+- Timing as a form-blue rail of action squares and rests, with a right-aligned clock column that mirrors the amount column once a step is pinned to a time.
 - 22px reading size for anything read mid-task; tap targets at least 44px.
 - Ruled rows, square corners or 4px at most, no elevation.
 - Authored line glyphs (24px, 2.25 stroke, round caps) in Form Blue; no icon font or library.
@@ -285,14 +348,14 @@ Scope of evidence: the recipe page, the homepage catalog, and the shared header,
 A two-ink print palette on white: one structural blue and one fluorescent marker, over a cool near-black text ramp.
 
 ### Primary
-- **Form Blue** (`form`): the printed structure of the form. The 3px header rule, section labels, breadcrumbs, step numerals, square list bullets, link text, the scale buttons' numerals, the switch track outline and its "on" fill, the whisk wires and ferrule, and the 3px focus outline. On the homepage: the find field's 2px border and glyphs, unselected tab labels, the 2px rule under the desktop tabs and the 3px rule over the phone tab bar, the catalog group labels, and the row arrows.
+- **Form Blue** (`form`): the printed structure of the form. The 3px header rule, section labels, breadcrumbs, step numerals, square list bullets, link text, the scale buttons' numerals, the switch track outline and its "on" fill, the whisk wires and ferrule, and the 3px focus outline. In a timeline: the rail (solid, or dotted 5px on / 5px off where the dough decides), the action squares (filled for the pinned step), the Done bar, the dashed pick slots, day-break labels, the editor's 2px frame and readout rule, and its Set button's fill. On the homepage: the find field's 2px border and glyphs, unselected tab labels, the 2px rule under the desktop tabs and the 3px rule over the phone tab bar, the catalog group labels, and the row arrows.
 
 ### Secondary
-- **Highlighter** (`highlighter`): marks only what is live. The selected scale button's fill, the selected catalog tab's fill, the matched letters in search results, the switch knob while the screen is held on, and `::selection`. Always carries Ink text or sits on Form Blue; never used as text color on white (1.2:1).
+- **Highlighter** (`highlighter`): marks only what is live. The selected scale button's fill, the selected catalog tab's fill, the matched letters in search results, the switch knob while the screen is held on, the timing slot being edited and the editor's chosen day, the "now" chip and the current step's square while a plan is underway, and `::selection`. Always carries Ink text or sits on Form Blue; never used as text color on white (1.2:1).
 
 ### Neutral
-- **Ink** (`ink`): body text, the title, amounts, catalog rows, the header's Recipes link, and the border and text of the selected scale button and selected tab.
-- **Soft Ink** (`ink-soft`): secondary text. The Source note, the footer hint, the disabled switch label, the find placeholder, the search status line, tab counts, and every tab while a search is running.
+- **Ink** (`ink`): body text, the title, amounts, catalog rows, the header's Recipes link, clock times, and the border and text of the selected scale button and selected tab. As a ground, Ink appears only in the timeline's night reverse print, a deliberate warning.
+- **Soft Ink** (`ink-soft`): secondary text. The Source note, the footer hint, the disabled switch label, the find placeholder, the search status line, tab counts, every tab while a search is running, and in a timeline the rest descriptions, AM/PM, the `±` span, the status line, and window and stretch notes.
 - **Done Ink** (`ink-done`): crossed-off lines (always paired with a 2px line-through) and the disabled switch track and knob. A deliberate low-contrast state for finished items, not a text color.
 - **Form Rule** (`form-rule`): 1px row rules between ingredient lines, under the title row and above the footer; the resting border of the scale buttons and desktop tabs; the rules above and between catalog rows.
 - **Paper** (`paper`): the page, the header, button grounds, and the whisk's halo.
@@ -300,7 +363,7 @@ A two-ink print palette on white: one structural blue and one fluorescent marker
 ### Named Rules
 **The Printed Structure Rule.** If it is part of the form (rule, label, numeral, bullet, link, focus ring), it is Form Blue. Text the cook wrote is Ink.
 
-**The Highlighter Is Live Rule.** Highlighter marks state that is currently on: the chosen scale, the selected catalog tab, the letters a search matched, the held wake lock, selected text. The only resting use is the whisk's grip, which belongs to the identity mark. Nothing else gets highlighter at rest.
+**The Highlighter Is Live Rule.** Highlighter marks state that is currently on: the chosen scale, the selected catalog tab, the letters a search matched, the held wake lock, the timing slot being edited, the "now" marker on a plan underway, selected text. The only resting use is the whisk's grip, which belongs to the identity mark. Nothing else gets highlighter at rest.
 
 ## Typography
 
@@ -324,13 +387,15 @@ A two-ink print palette on white: one structural blue and one fluorescent marker
 - **Control** (600, 1.1875rem / 19px): the header's Recipes link; the wake switch label is 600 at 1.125rem; scale button numerals are 800 at 1.1875rem.
 - **Note** (400, 1.125rem / 18px, Soft Ink): the Source section and the catalog's search status line (its count in 700 Ink).
 - **Small** (400, 1rem / 16px, Soft Ink): the footer hint.
+- **Clock** (800, body size, 1.2, tabular; AM/PM at 0.6em 700 in Soft Ink, 0.55em on phones): planned times in the timeline's clock column. A rest's duration uses the same 800 tabular figures with `h`/`min` at 0.72em, like the gram unit.
+- **Readout** (800, 36px, tabular; AM/PM at 0.5em): the time in the inline time editor, a size used nowhere else. It is the number being set, so it is the largest figure on the screen while the editor is open.
 
 ### Named Rules
 **The One Family Rule.** Archivo is the only face. Role is carried by width, weight and case, not by a second family or a monospace.
 
 **The Amount First Rule.** Amounts, times and temperatures are the heaviest marks in their line (800). The cook should find the number before the word.
 
-**The Arm's-Length Rule.** Anything read mid-task is set at 22px or larger. Below that is reserved for labels, wayfinding (tabs, counts, find input, status line) and the footer hint.
+**The Arm's-Length Rule.** Anything read mid-task is set at 22px or larger. Below that is reserved for labels, wayfinding (tabs, counts, find input, status lines, timing windows and notes) and the footer hint.
 
 ## Layout
 
@@ -344,7 +409,7 @@ At 768px and below the catalog changes shape: the find field runs full width but
 
 Gutters respect the device's safe areas: the viewport is `viewport-fit=cover`, the gutter is the larger of 40px (18px on phones) and the left or right safe-area inset, and the bottom bar pads by the safe-area insets with a 10px floor.
 
-Sections are 36px apart. Each opens with a 44px label row; in Ingredients the scale control sits at the right end of that row. Ingredient rows are a two-column grid: a 4.6rem right-aligned amount column, 14px gap, then the item; lines without an amount indent to the item column so text aligns. Step lists hang their numerals 34px out. The footer shares the page width, separated by a 1px Form Rule.
+Sections are 36px apart. Each opens with a 44px label row; in Ingredients the scale control sits at the right end of that row. Ingredient rows are a two-column grid: a 4.6rem right-aligned amount column, 14px gap, then the item; lines without an amount indent to the item column so text aligns. Step lists hang their numerals 34px out. A timeline row is a three-column grid: the clock column (0 until a step is pinned, then 8rem with a 14px gap; 7rem and 8px at 768px and below, wide enough that `~12:10 PM` and a night chip keep the same right edge as every other time), a 30px rail, then the text 12px in. Rests take vertical room on a log scale of their length (12–60px above and below, 0.8× on phones), so a 12-hour rest reads longer than a 10-minute one without the page running to hours. The footer shares the page width, separated by a 1px Form Rule.
 
 ## Elevation & Depth
 
@@ -355,7 +420,7 @@ Flat. There are no shadows anywhere in the designed surfaces. Separation comes f
 
 ## Shapes
 
-Square by default. Buttons, the find field and the clear button take a 4px corner (`rounded.control`); desktop tabs round only their top corners (4px 4px 0 0) and have no bottom border, so they stand on the rule beneath them like file tabs; phone tab cells are 4px all round. Rows, rules and the 6px square list bullets have none.
+Square by default. Buttons, the find field and the clear button take a 4px corner (`rounded.control`); desktop tabs round only their top corners (4px 4px 0 0) and have no bottom border, so they stand on the rule beneath them like file tabs; phone tab cells are 4px all round. Rows, rules, the 6px square list bullets and the timeline's 16px action squares have none; the clock buttons, pick slots, night reverse print, "now" chip and the inline editor's frame take the 4px control corner.
 
 Icons are authored line glyphs on a 24px box: 24px, 2.25 stroke, round caps and joins, no fill, colored by `currentColor` (find, clear, and the row arrow). They are drawn for the site, not taken from a library or icon font. The wake switch is the one fully rounded form: a 52 × 30px track (15px radius) with a 20px round knob, because that is the native shape of a toggle switch. The whisk is the only organic silhouette.
 
@@ -368,7 +433,7 @@ Icons are authored line glyphs on a 24px box: 24px, 2.25 stroke, round caps and 
 - **Hover:** border darkens to Form Blue.
 - **Selected:** Highlighter fill, Ink border and numerals. The change is meant to be instant.
 - **Known drift (not yet repaired):** these buttons do not override Bulma's default button fade, so they still inherit a 294ms transition; the catalog controls show the intended `transition: none`.
-- **Behavior:** rescales every whole-gram amount in that section and is remembered per recipe. Only the chosen scale's amounts are ever shown; there are no unused scale columns and no computed totals.
+- **Behavior:** rescales every whole-gram amount in that section and is remembered per recipe. Only the chosen scale's amounts are ever shown; there are no unused scale columns and no computed totals of recipe weights.
 
 ### Keep-Screen-On Switch
 *One visible switch that tells the truth.*
@@ -383,8 +448,29 @@ Icons are authored line glyphs on a 24px box: 24px, 2.25 stroke, round caps and 
 - **Crossed off:** tapping any ingredient or step toggles Done Ink plus a 2px line-through. Pointer cursor and no text selection make the line read as a control.
 
 ### Step List
-- **Style:** numbered sequence for Timing, Method, Steps, Instructions or Directions sections. Form Blue numerals at 800 tabular, hung 34px; 15px between steps. Durations and temperatures bolded. Crossed-off steps grey their numeral too.
+- **Style:** numbered sequence for Timing, Method, Steps, Instructions or Directions sections that are not written as a timeline (no rest lines, or a nested list). Form Blue numerals at 800 tabular, hung 34px; 15px between steps. Durations and temperatures bolded. Crossed-off steps grey their numeral too.
 - **Other lists:** non-sequence, non-ingredient sections use a 6px square Form Blue bullet.
+
+### Timeline (signature)
+*The production schedule: a rail of things to do and the waits between them.*
+- **Rail:** a 2px Form Blue line in a 30px column, solid through fixed rests and dotted (5px on, 5px off) through approximate ones, where the dough decides. It starts at the first square and stops at Done, a 22 × 4px Form Blue bar.
+- **Actions:** a 16px square with a 2.5px Form Blue border on Paper beside the cook's words in Body type. The pinned step's square is filled Form Blue. Tapping the row crosses it off: words in Done Ink with a 2px line-through, square and clock time in Done Ink.
+- **Rests:** the duration is the heaviest mark in the row (800 tabular, `h`/`min` units at 0.72em, a `±` span in 700 Soft Ink), followed by what is happening in Soft Ink.
+- **Status line:** Note type in Soft Ink with key figures in 700 Ink, announced politely. At rest it gives the total time ("About 16 h 40 min start to finish"); planned, when it ends or what lands in the night; underway, the next step and its countdown.
+- **Controls:** Start now and Plan (or Cancel, or Clear) at the right of the Timing label row: 44px buttons with a 1.5px Form Rule border and 4px corners, Form Blue 700 labels at 17px, border to Form Blue on hover. Hidden until the script runs.
+- **Clock column:** once planned, each action and Done shows its time right-aligned in Clock type, mirroring the amount column. Times are rounded to 5 minutes except the pinned one, which is exact and underlined in Form Blue; times past an approximate rest carry a Soft Ink `~`. Each time is a button that re-opens the editor; hover underlines it.
+- **Windows and notes:** a step on the far side of an elastic rest gets "Window **4:20 AM** – **10:20 AM**" beneath it, and a rest stretched to keep a step out of the night says so ("Planned at **12 h 15 min** to keep bake out of the night"), both in Note type in Soft Ink with times in 700 Ink.
+- **Day breaks:** where the calendar day changes, a Section-label weekday in Form Blue followed by a 1px Form Rule across the text column.
+- **Night reverse print:** an action that starts between 9 PM and 6 AM prints its time in reverse, Paper on an Ink chip (AM/PM in a light grey), and adds a moon glyph with "In the night" in 700 Ink at 18px. On phones the chip trims its side padding and figures to 0.9em so a time like "~10:40 PM" clears the rail. Rests are never flagged.
+- **Now (live):** while a plan is underway, the current action's square fills Highlighter with an Ink border; inside a rest, a Highlighter chip with a 1.5px Ink border shows the time in the clock column with an 18 × 3px Ink tick across the rail, placed proportionally through the rest. It refreshes every 30 seconds while the page is visible.
+- **No-JS:** the rail, squares, rest durations, total and Done render statically; no clock column and no controls.
+
+### Pick Slot and Time Editor
+*Pin one step; everything else follows.*
+- **Pick slot:** in Plan mode every action and Done offers a full-width 44px slot in the clock column: dashed 1.5px Form Blue border, 4px corners, "Set" in Form Blue 700 at 17px; solid on hover. The slot being edited turns solid Highlighter with an Ink border and shows the time being set.
+- **Editor:** opens as its own row directly under the step, framed by a 2px Form Blue border with 4px corners and 14px padding. A Note-type heading ("**Shape and move to pan** at"), then: 56px square −15 / +15 steppers (1.5px Form Rule border, Form Blue 800 at 19px) either side of the Readout, which sits on a 2px Form Blue rule and is a transparent native time input underneath, so a tap opens the platform's time wheel; a Today / Tomorrow pair (48px, Form Rule border, the chosen day in Highlighter with an Ink border) and a Now button; and a 52px Form Blue Set button (Ink on hover) with a plain Form Blue Cancel.
+- **Keyboard:** focus moves to the readout on open and back to the step's clock button on close; Escape cancels.
+- **Motion:** none; every timeline button sets `transition: none`.
 
 ### Whisk Mark (signature identity)
 *The owner's whisk, dipping into the page.*
@@ -428,7 +514,7 @@ Icons are authored line glyphs on a 24px box: 24px, 2.25 stroke, round caps and 
 
 ### Do:
 - **Do** draw every piece of form structure (rules, labels, numerals, bullets, links, focus) in Form Blue and the cook's content in Ink.
-- **Do** reserve Highlighter for live state: the chosen scale, the selected tab, matched search letters, the held wake lock, selected text.
+- **Do** reserve Highlighter for live state: the chosen scale, the selected tab, matched search letters, the held wake lock, the timing slot being edited, the "now" marker, selected text.
 - **Do** set anything read mid-task at 22px or larger, with amounts, times and temperatures at 800.
 - **Do** keep tap targets at least 44px tall and state changes instant; set `transition: none` on any new button, since Bulma fades buttons by default.
 - **Do** separate rows and regions with 1px Form Rule lines and the 3px Form Blue header rule.
@@ -439,7 +525,7 @@ Icons are authored line glyphs on a 24px box: 24px, 2.25 stroke, round caps and 
 ### Don't:
 - **Don't** add cards, shadows, raised panels, chips or pill-shaped buttons; the toggle switch is the only rounded form.
 - **Don't** introduce a second typeface or a monospace for amounts; use Archivo's tabular figures.
-- **Don't** show amounts for scales other than the chosen one, or computed totals.
+- **Don't** show amounts for scales other than the chosen one, or computed totals of recipe weights. (A timeline's total time is fine; it is a schedule, not a sum of ingredients.)
 - **Don't** use Highlighter at rest outside the whisk grip, or as a text color on white.
 - **Don't** add entrance or decorative motion.
 - **Don't** design or preserve a dark mode; the site is light only.

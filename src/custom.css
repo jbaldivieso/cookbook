@@ -489,13 +489,13 @@ a:hover {
   counter-reset: step;
 }
 
-.is-sequence li {
+.is-sequence:not(.is-timeline) li {
   position: relative;
   padding: 0 0 15px 34px;
   counter-increment: step;
 }
 
-.is-sequence li::before {
+.is-sequence:not(.is-timeline) li::before {
   content: counter(step);
   position: absolute;
   left: 0;
@@ -526,6 +526,588 @@ a:hover {
 .is-source p {
   font-size: 1.125rem;
   color: var(--ink-soft);
+}
+
+/* Timing as a timeline: a form-blue rail with a square per action and the
+   rests between them. Planning adds a clock column on the left, mirroring the
+   amount column. Without JS it renders as-is, with no clock and no controls. */
+.is-timeline button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  /* Bulma fades every button; state changes here are instant */
+  transition: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tl-controls {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.tl-controls[hidden] {
+  display: none;
+}
+
+.tl-controls button {
+  min-width: 48px;
+  min-height: 44px;
+  padding: 0 13px;
+  border: 1.5px solid var(--form-rule);
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  color: var(--form);
+}
+
+.tl-controls button:hover {
+  border-color: var(--form);
+}
+
+.recipe-body .tl-status {
+  min-height: 26px;
+  margin: 0 0 16px;
+  font-size: 1.125rem;
+  line-height: 1.4;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.tl-status b {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.tl-status .tl-moon {
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+  vertical-align: -4px;
+  color: var(--ink);
+}
+
+.tl-moon {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tl {
+  --tc: 0px;
+  --tgap: 0px;
+  --restk: 1px;
+}
+
+/* Wide enough for the widest time, "~12:10 PM" or a reverse-printed night chip,
+   so every time keeps the same right edge */
+.tl.has-clock {
+  --tc: 8rem;
+  --tgap: 14px;
+}
+
+.tl > li {
+  display: grid;
+  grid-template-columns: var(--tc) 30px minmax(0, 1fr);
+  position: relative;
+  cursor: default;
+}
+
+.tl .t {
+  padding-right: var(--tgap);
+  text-align: right;
+}
+
+.tl .r {
+  position: relative;
+}
+
+.tl .c {
+  min-width: 0;
+  padding-left: 12px;
+}
+
+/* The rail: solid for fixed rests, dotted where the dough decides */
+.tl .r::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--form);
+}
+
+.tl > li:first-child .r::before {
+  top: 16px;
+}
+
+.tl .is-approx .r::before {
+  background: repeating-linear-gradient(var(--form) 0 5px, transparent 5px 10px);
+}
+
+/* Actions: a square on the rail, the cook's words beside it */
+.tl .tl-act,
+.tl .tl-end {
+  min-height: 44px;
+}
+
+.tl .tl-act {
+  cursor: pointer;
+}
+
+.tl .tl-act .c,
+.tl .tl-end .c {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.tl .txt {
+  display: block;
+}
+
+.tl .mk {
+  position: absolute;
+  left: 7px;
+  top: 14px;
+  width: 16px;
+  height: 16px;
+  border: 2.5px solid var(--form);
+  background: var(--paper);
+}
+
+.tl .is-anchor .mk {
+  background: var(--form);
+}
+
+.recipe-body .tl > li.completed {
+  color: inherit;
+  text-decoration: none;
+}
+
+.tl .completed .txt {
+  color: var(--ink-done);
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+.tl .completed .mk {
+  border-color: var(--ink-done);
+  background: var(--paper);
+}
+
+.tl .completed.is-anchor .mk {
+  background: var(--ink-done);
+}
+
+.tl .is-current .mk {
+  border-color: var(--ink);
+  background: var(--highlighter);
+}
+
+.tl .tl-end .r::before {
+  bottom: auto;
+  height: 22px;
+}
+
+.tl .tl-end .mk {
+  left: 4px;
+  top: 20px;
+  width: 22px;
+  height: 4px;
+  border: 0;
+  background: var(--form);
+}
+
+.tl .tl-end .txt {
+  font-weight: 700;
+}
+
+/* Rests: the time is the content, so it is the heaviest mark in the row.
+   Longer rests take more room (--w, set at build time). */
+.tl .tl-rest .c {
+  padding-top: calc(var(--w) * var(--restk));
+  padding-bottom: calc(var(--w) * var(--restk));
+}
+
+.tl .dur {
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.tl .dur .pm {
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.tl .what {
+  color: var(--ink-soft);
+}
+
+/* Clock column: right-aligned tabular times, like the amount column */
+.tl .clock {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 2px;
+  min-height: 44px;
+  margin-top: -1px;
+  padding: 7px 2px 0;
+  border-radius: 4px;
+  font-weight: 800;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.tl .clock .ap {
+  font-size: 0.6em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.tl .clock .ap::before {
+  content: " ";
+}
+
+.tl .clock .ap,
+.tl .clock .est {
+  color: var(--ink-soft);
+}
+
+.tl .clock .est {
+  margin-right: -1px;
+  font-weight: 700;
+}
+
+.tl .clock:hover,
+.tl .is-anchor .clock {
+  text-decoration: underline;
+  text-decoration-color: var(--form);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+}
+
+.tl .completed .clock,
+.tl .completed .clock .ap {
+  color: var(--ink-done);
+}
+
+/* A step that lands in the night is printed in reverse */
+.tl .is-night .clock {
+  min-height: 0;
+  margin-top: 3px;
+  padding: 4px 6px 5px;
+  background: var(--ink);
+  color: var(--paper);
+  text-decoration: none;
+}
+
+.tl .is-night .clock .ap,
+.tl .is-night .clock .est {
+  color: #c7cbd3;
+}
+
+.tl .flag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--ink);
+}
+
+/* Pick mode: every action offers an empty slot to pin */
+.tl .slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  border: 1.5px dashed var(--form);
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  color: var(--form);
+}
+
+.tl .slot:hover {
+  border-style: solid;
+}
+
+.tl .is-editing .slot {
+  border-style: solid;
+  border-color: var(--ink);
+  background: var(--highlighter);
+  color: var(--ink);
+}
+
+/* The elastic window, under the step it lets you slide, and the note on a
+   rest that was stretched to keep a step out of the night */
+.tl .win {
+  display: block;
+  margin-top: 3px;
+  font-size: 1.125rem;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+.tl .win b {
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* Day breaks: a printed rule with the day's name */
+.tl .tl-day .c {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0 10px 12px;
+}
+
+.tl .tl-day .c::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--form-rule);
+}
+
+.tl .dlab {
+  font-weight: 700;
+  font-size: 0.875rem;
+  font-stretch: 125%;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--form);
+}
+
+.tl > li.tl-day:first-child .c {
+  padding-top: 2px;
+}
+
+.tl > li.tl-day:first-child .r::before {
+  top: 0;
+}
+
+/* Live: where the clock is now, inside a rest */
+.tl .nowtick {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--at);
+  display: grid;
+  grid-template-columns: var(--tc) 30px;
+  align-items: center;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.tl .nowtick > span {
+  justify-self: end;
+  margin-right: var(--tgap);
+  padding: 3px 6px;
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  background: var(--highlighter);
+  font-weight: 800;
+  font-size: 1.0625rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.tl .nowtick .ap {
+  font-size: 0.7em;
+  font-weight: 700;
+}
+
+.tl .nowtick .ap::before {
+  content: " ";
+}
+
+.tl .nowtick i {
+  justify-self: start;
+  width: 18px;
+  height: 3px;
+  margin-left: 6px;
+  background: var(--ink);
+}
+
+/* Inline editor: opens under the step being pinned */
+.tl > li.tl-ed {
+  display: block;
+  margin: 6px 0 12px;
+  padding: 14px;
+  border: 2px solid var(--form);
+  border-radius: 4px;
+  background: var(--paper);
+}
+
+.tl-ed .ed-head {
+  margin-bottom: 10px;
+  font-size: 1.125rem;
+  color: var(--ink-soft);
+}
+
+.tl-ed .ed-head b {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.tl-ed .ed-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tl-ed .ed-row + .ed-row {
+  margin-top: 10px;
+}
+
+.tl-ed .stp {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border: 1.5px solid var(--form-rule);
+  border-radius: 4px;
+  font-weight: 800;
+  font-size: 1.1875rem;
+  color: var(--form);
+}
+
+.tl-ed .stp:hover {
+  border-color: var(--form);
+}
+
+/* The readout is a transparent time input underneath, so a tap opens the
+   native picker; the steppers keep it usable without typing */
+.tl-ed .ed-time {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  height: 56px;
+  padding-top: 6px;
+  border-bottom: 2px solid var(--form);
+  font-weight: 800;
+  font-size: 36px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.tl-ed .ed-time:focus-within {
+  outline: 3px solid var(--form);
+  outline-offset: 2px;
+}
+
+.tl-ed .ed-time .ap {
+  margin-left: 4px;
+  font-size: 0.5em;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.tl-ed .ed-time input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  opacity: 0;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.tl-ed .seg {
+  display: inline-flex;
+  flex: 1;
+  gap: 6px;
+}
+
+.tl-ed .seg button,
+.tl-ed .ghost {
+  flex: 1;
+  min-height: 48px;
+  padding: 0 10px;
+  border: 1.5px solid var(--form-rule);
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  color: var(--form);
+}
+
+.tl-ed .seg button[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--highlighter);
+  color: var(--ink);
+}
+
+.tl-ed .ghost {
+  flex: 0 0 auto;
+}
+
+.tl-ed .go {
+  flex: 1;
+  min-height: 52px;
+  border-radius: 4px;
+  background: var(--form);
+  font-weight: 700;
+  font-size: 1.1875rem;
+  color: var(--paper);
+}
+
+.tl-ed .go:hover {
+  background: var(--ink);
+}
+
+.tl-ed .cancel {
+  min-height: 52px;
+  padding: 0 14px;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  color: var(--form);
+}
+
+.tl-ed .cancel:hover {
+  color: var(--ink);
+}
+
+@media (max-width: 768px) {
+  .tl {
+    --restk: 0.8px;
+  }
+
+  .tl.has-clock {
+    --tc: 7rem;
+    --tgap: 8px;
+  }
+
+  .tl .clock .ap {
+    font-size: 0.55em;
+  }
+
+  /* Trim the night chip so "~10:40 PM" fits the narrower phone clock column */
+  .tl .is-night .clock {
+    padding-inline: 4px;
+    font-size: 0.9em;
+  }
+
+  .tl .is-night .clock .ap {
+    font-size: 0.6em;
+  }
 }
 
 /* Homepage catalog: square printed tabs over the active category's recipes,

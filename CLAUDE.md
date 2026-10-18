@@ -73,6 +73,62 @@ title: Pain de campagne
 - `markScalableQuantities` only runs on HTML output paths containing `/recipes/`.
 - Recipes generally end with a `## Source` section crediting the original.
 
+### Timing sections
+
+Timing is written as a list of **actions** (things the cook does) alternating with
+**rests** (waits), so the schedule can be worked out from any one time of day.
+`raisin-pecan-bread` is the reference example:
+
+```markdown
+## Timing
+- Mix all but the pecans. [5 minutes]
+- 15-20 minutes: autolyse
+- First fold
+- ~2 hours 30 minutes: rest, until the dough is 2.5-3x original size
+- Shape and move to pan. [10 minutes]
+- 12 hours ± 3: overnight rest in fridge
+- Bake for 50 minutes at 425. [50 minutes]
+```
+
+- A line that **starts with a duration and a colon** is a rest; every other line is an
+  action. The text after the colon is free (`rest`, `autolyse`, `overnight rest in fridge`).
+- An action may end with a `[duration]`: how long the cook is busy (mixing, shaping,
+  baking). Leave it off for quick steps like folds; it counts as zero. The prose keeps any
+  times worth reading ("Bake for 50 minutes"); the bracket is for the clock arithmetic.
+- A leading `~` on a rest means the dough decides when it ends, and the duration is an
+  estimate. Put the cue on the rest (`~30 minutes: rest, until …`), not on the next action.
+- A range (`15-20 minutes`) or a `±` (`12 hours ± 3`, the unit carrying over from the
+  duration) means any length in that span works. Use `±` when there is a usual value.
+  Ranges and `±` are what make a schedule flexible, so put real slack in the duration
+  rather than in prose ("probably ± 3 hours").
+- Durations are hours and/or minutes: `10 minutes`, `2 hours 30 minutes`, `1.5 hours`.
+  "Overnight" alone is not a duration; give the number.
+- Prep that has to start ahead of time (feeding a starter, soaking fruit) is just more
+  leading lines in the same form, e.g. `Feed the starter`, then `8-12 hours: starter ripens`.
+- Keep the list flat. Tasks that overlap a step (preheating, covering with foil partway
+  through a bake) stay in that step's prose; the timeline doesn't model them.
+- Older recipes still use free-form Timing lists; they render as plain numbered steps.
+  Convert them one at a time.
+
+`recipeSections` turns a sequence section into a timeline (`is-timeline` on the section)
+when its one list has at least one rest line and no nested lists; anything else, including
+the older free-form lists, falls back to the numbered list unchanged. The parse runs before
+`emphasizeFigures`. The build emits `<ol class="tl" data-timeline>` with one row per line:
+actions are `li.tl-act` with `data-dur` (minutes) and `data-short` (the name used in status
+lines: text up to the first `.`, `,`, `(`, " for ", " at " or " when "), rests are
+`li.tl-rest` (`is-approx` for `~`) with `data-lo`/`data-hi`/`data-mid` in minutes and a
+`--w` spacing weight, then a `tl-end` Done row. The status line already holds the total
+time, and the Start now / Plan controls stay `hidden` until JS runs, so without JS the
+timeline reads statically.
+
+`initTimeline` in `main.js` reads that data back and adds the clock column: pin any action
+or Done to a time, and every other step is worked out from it, with elastic rests (a span
+of 60+ minutes) stretching to keep the next action out of the night (9 PM–6 AM, the
+`NIGHT_START`/`NIGHT_END` constants). The plan is stored in `localStorage` under
+`recipe-plan:<pathname>` as `{ node, time, count }`; it is dropped when `count` (the
+build's row count, Done included) no longer matches, or when Done was more than 24 hours
+ago. In timelines only `.tl-act` rows cross off.
+
 ## Gotchas
 
 - Link building in templates must pipe through the `url` filter (`{{ '/foo' | url }}`) so
@@ -86,10 +142,10 @@ title: Pain de campagne
   there. `icon.png` (512px, home-screen icon) and `favicon.svg` are drawings of the whisk
   mark in `src/_includes/header.njk`; keep them in step if the mark changes.
 - `sw.js` uses a cache-first strategy for static assets keyed on `CACHE_NAME`
-  (currently `cookbook-v4`); bump that constant when changing precached assets, or clients will serve
+  (currently `cookbook-v6`); bump that constant when changing precached assets, or clients will serve
   stale bundles.
-- `src/main.js` exposes `enableWakeLock`, `initRecipeScaling`, `initListItemToggle`, and
-  `initCatalog` on `window`; `recipe.njk` and `index.html` call them from an inline
+- `src/main.js` exposes `enableWakeLock`, `initRecipeScaling`, `initListItemToggle`,
+  `initTimeline`, and `initCatalog` on `window`; `recipe.njk` and `index.html` call them from an inline
   `DOMContentLoaded` script. New page-level
   JS needs the same wiring. The keep-screen-on control is `#wake-lock-switch` in the recipe
   title row; it stays `hidden` until `enableWakeLock` runs. Likewise the homepage tabs and

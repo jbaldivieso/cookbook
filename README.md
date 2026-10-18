@@ -9,6 +9,7 @@ propped up on the counter.
   homepage (one tab per top-level category) with search by recipe name
 - Scale ingredient amounts (1x / 2x / 3x) with a per-section toggle; the choice is remembered per recipe
 - Tap an ingredient line to cross it out as you go
+- Plan a recipe's timing from any step's time of day, with warnings for steps that land overnight
 - Keeps the screen awake while a recipe is open (Wake Lock API), with a switch to turn it off
 - Installable as a PWA, with offline caching via a service worker
 

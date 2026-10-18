@@ -15,11 +15,17 @@ title: Raisin-Pecan Bread
 - `80g` pecans
 
 ## Timing
-- Autolyse: 15-20 minutes, then mix. Pecans go in halfway through the mix.
-- First fold after 10 minutes.
-- Fold again "when you see the dough spread out in the tub".
-- Shape and move to pan when dough is 2.5-3x original size: 3 hours.
-- Bake for an 50 minutes at 425 (or 400?). Cover with foil after 15-20 minutes.
+- Mix all but the pecans. [5 minutes]
+- 15-20 minutes: autolyse
+- Proper mix. Pecans go in halfway through. [5 minutes]
+- 10 minutes: rest
+- First fold
+- ~30 minutes: rest, until "you see the dough spread out in the tub"
+- Fold again
+- ~2 hours 30 minutes: rest, until the dough is 2.5-3x original size
+- Shape and move to pan. [10 minutes]
+- 12 hours ± 3: overnight rest in fridge
+- Bake for 50 minutes at 425 (or 400?). Cover with foil after 15-20 minutes. [50 minutes]
 
 ## Notes
 
